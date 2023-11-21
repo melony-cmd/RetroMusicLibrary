@@ -82,11 +82,11 @@ Procedure SNDH_Play(*sound)
   *this.SoundServer::STRUCT_PUBLIC_AUDIOSERVER
   CopyStructure(*sound,*this, SoundServer::STRUCT_PUBLIC_AUDIOSERVER)
   
-  If SoundServer::SoundServer_Open(*this,SoundServer::p\Render,500)
+  If SoundServer::Open(*this,SoundServer::p\Render,500)
     Repeat  
       Delay(1) 
     Until *this\kill 
-    SoundServer::SoundServer_Close(*this);
+    SoundServer::Close(*this);
     If MemorySize(*this\sndh_mem) 
       FreeMemory(*this\sndh_mem)
     EndIf 
@@ -164,8 +164,8 @@ EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 145
-; FirstLine = 106
+; CursorPosition = 88
+; FirstLine = 23
 ; Folding = --
 ; EnableXP
 ; DPIAware

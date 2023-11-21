@@ -45,9 +45,9 @@ DeclareModule SoundServer
     *m_pUserCallback.pUSERCALLBACK 	 
   EndStructure 
   
-  Declare SoundServer_Open(*this,pUserCallback,totalBufferedSoundLen.l=4000)
-  Declare SoundServer_Close(*this)
-  Declare SoundServer_Play(*this)
+  Declare Open(*this,pUserCallback,totalBufferedSoundLen.l=4000)
+  Declare Close(*this)
+  Declare Play(*this)
   
 EndDeclareModule 
 
@@ -73,7 +73,7 @@ Module SoundServer
     *m_pUserCallback.pUSERCALLBACK 	 
   EndStructure  
   
-  Declare SoundServer_FillNextBuffer(*this.STRUCT_AUDIOSERVER)
+  Declare FillNextBuffer(*this.STRUCT_AUDIOSERVER)
   
   ;*****************************************************************************
   ;-Server WaveOut
@@ -88,7 +88,7 @@ Module SoundServer
       *pServer = dwInstance;
       If *pServer        
         If *pServer\m_pUserCallback <> #Null 
-          SoundServer_FillNextBuffer(*pServer)
+          FillNextBuffer(*pServer)
         EndIf   
       EndIf 
     EndIf     
@@ -97,7 +97,7 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure SoundServer_Open(*this.STRUCT_AUDIOSERVER,pUserCallback,totalBufferedSoundLen.l=4000)    
+  Procedure Open(*this.STRUCT_AUDIOSERVER,pUserCallback,totalBufferedSoundLen.l=4000)    
     *this\m_pUserCallback = pUserCallback;
     *this\m_bufferSize = ((totalBufferedSoundLen * #REPLAY_RATE) / 1000) * #REPLAY_SAMPLELEN
     *this\m_bufferSize / #REPLAY_NBSOUNDBUFFER
@@ -122,7 +122,7 @@ Module SoundServer
     
     *this\m_currentBuffer = 0
     For i=0 To #REPLAY_NBSOUNDBUFFER-1
-      SoundServer_FillNextBuffer(*this)
+      FillNextBuffer(*this)
     Next 
     ProcedureReturn #True
   EndProcedure 
@@ -130,7 +130,7 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure SoundServer_Close(*this.STRUCT_AUDIOSERVER)    
+  Procedure Close(*this.STRUCT_AUDIOSERVER)    
     If  *this\m_pUserCallback <> #Null      
       *this\m_pUserCallback = #Null
       waveOutReset_(*this\m_hWaveOut)					
@@ -148,7 +148,7 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure  SoundServer_FillNextBuffer(*this.STRUCT_AUDIOSERVER)       
+  Procedure  FillNextBuffer(*this.STRUCT_AUDIOSERVER)       
     If *this\m_waveHeader[*this\m_currentBuffer]\dwFlags & #WHDR_PREPARED 
       waveOutUnprepareHeader_(*this\m_hWaveOut,@*this\m_waveHeader[*this\m_currentBuffer],SizeOf(WAVEHDR));
     EndIf 
@@ -175,7 +175,7 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure SoundServer_Callback(pmusic,*pBuffer,size.i)
+  Procedure Callback(pmusic,*pBuffer,size.i)
     Protected nbSample       
     If (pMusic)
       nbSample = size >> 1;
@@ -196,7 +196,7 @@ Module SoundServer
   ;
   ; 
   ;
-  Procedure SoundServer_Play(*sound.STRUCT_AUDIOSERVER)
+  Procedure Play(*sound.STRUCT_AUDIOSERVER)
     If Not IsThread(*sound\tid)
       *sound\tid = CreateThread(SoundServer::p\Play,*sound)  
     EndIf
@@ -231,8 +231,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 201
-; FirstLine = 172
+; CursorPosition = 212
+; FirstLine = 177
 ; Folding = --
 ; EnableXP
 ; DPIAware
