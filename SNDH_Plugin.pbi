@@ -78,7 +78,21 @@ EndProcedure : SoundServer::p\Render=@SNDH_Render
 ;
 ; Play Thread 
 ;
-Procedure SNDH_Play()    
+Procedure SNDH_Play(*sound)
+  *this.SoundServer::STRUCT_PUBLIC_AUDIOSERVER
+  CopyStructure(*sound,*this, SoundServer::STRUCT_PUBLIC_AUDIOSERVER)
+  
+  If SoundServer::SoundServer_Open(*this,SoundServer::p\Render,500)
+    Repeat  
+      Delay(1) 
+    Until *this\kill 
+    SoundServer::SoundServer_Close(*this);
+    If MemorySize(*this\sndh_mem) 
+      FreeMemory(*this\sndh_mem)
+    EndIf 
+    FreeMemory(*this) 
+    *this = 0 
+  EndIf 
 EndProcedure : SoundServer::p\Play=@SNDH_Play
 
 ;
@@ -99,8 +113,10 @@ EndProcedure : SoundServer::p\Stop=@SNDH_Pause
 
 ;
 ; Load Song
-;
+; Arguments = FileName
+; Results = 0 = Failure, 1 = Success
 
+;
 ; nb: in theory sndh_mem should be stored in STRUCT_AUDIOSERVER
 ; however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
 ; this shouldn't matter anyway as once SNDH_Load() has been given the
@@ -108,6 +124,14 @@ EndProcedure : SoundServer::p\Stop=@SNDH_Pause
 ; of SNDH_Load() internally decompressing the sndh file from ICE and thus
 ; it is now working from the decompressed data not the memory we gave it.
 ;
+
+; All of that said; it's quite possible to have an uncompressed sndh file
+; though rare! so it should not be assumed that we can actually free it,
+; now if we was talking about flac/mp3 or other formats I'd be really 
+; concerned about over memory usage.
+
+; thus it's commented out for now.
+
 Procedure.l SNDH_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
   If fn
@@ -115,16 +139,14 @@ Procedure.l SNDH_LoadMusic(file.s)
     sndh_mem = AllocateMemory(filesize)
     If sndh_mem
       ReadData(fn,sndh_mem,filesize)       
-      *sound = SNDH_Load(sndh_mem,filesize,44100)
+      result = SNDH_Load(sndh_mem,filesize,44100)
       ; we no longer need the file anymore SNDH.dll 
       ; has used ICE to decompress it.
-      FreeMemory(sndh_mem)                          
+      ; FreeMemory(sndh_mem)                  
     EndIf      
     CloseFile(fn)
-    If *sound
-      ProcedureReturn *sound 
-    EndIf
   EndIf  
+  ProcedureReturn result
 EndProcedure
 
 ;
@@ -136,18 +158,14 @@ EndProcedure
 ;*****************************************************************************
 SNDH_OpenLibrary()
 
-sound = SNDH_LoadMusic("decade_demo-loader.sndh")
-SNDH_InitSubSong(1)
-
-
-
-Debug sound
-
+If SNDH_LoadMusic("decade_demo-loader.sndh")=1
+  SNDH_InitSubSong(1)
+EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 106
-; FirstLine = 78
+; CursorPosition = 145
+; FirstLine = 106
 ; Folding = --
 ; EnableXP
 ; DPIAware

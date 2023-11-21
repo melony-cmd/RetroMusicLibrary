@@ -46,6 +46,8 @@ DeclareModule SoundServer
   EndStructure 
   
   Declare SoundServer_Open(*this,pUserCallback,totalBufferedSoundLen.l=4000)
+  Declare SoundServer_Close(*this)
+  Declare SoundServer_Play(*this)
   
 EndDeclareModule 
 
@@ -179,8 +181,13 @@ Module SoundServer
       nbSample = size >> 1;
       ;instead references the structure above to find the address in ??_Plugin.pbi to render.      
       CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
-    EndIf     
+    EndIf        
   EndProcedure 
+  ;
+  ;
+  ;
+  
+  
   
   ;*****************************************************************************
   ;-Server Commands
@@ -189,10 +196,10 @@ Module SoundServer
   ;
   ; 
   ;
-  Procedure SoundServer_Play(*sound.STRUCT_AUDIOSERVER) 
+  Procedure SoundServer_Play(*sound.STRUCT_AUDIOSERVER)
     If Not IsThread(*sound\tid)
       *sound\tid = CreateThread(SoundServer::p\Play,*sound)  
-    EndIf   
+    EndIf
   EndProcedure
   
 EndModule 
@@ -224,8 +231,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 31
-; FirstLine = 9
+; CursorPosition = 201
+; FirstLine = 172
 ; Folding = --
 ; EnableXP
 ; DPIAware
