@@ -78,18 +78,7 @@ EndProcedure : SoundServer::p\Render=@SNDH_Render
 ;
 ; Play Thread 
 ;
-Procedure SNDH_Play(*sound.STRUCT_PUBLIC_AUDIOSERVER)    
-  If SoundServer::SoundServer_Open(*sound,SoundServer::p\Render,500)
-    Repeat  
-      Delay(1) 
-    Until *sound\kill 
-    CsoundServer_close(*sound);
-    If MemorySize(*sound\sndh_mem) 
-      FreeMemory(*sound\sndh_mem)
-    EndIf 
-    FreeMemory(*sound) 
-    *sound = 0 
-  EndIf 
+Procedure SNDH_Play()    
 EndProcedure : SoundServer::p\Play=@SNDH_Play
 
 ;
@@ -111,7 +100,15 @@ EndProcedure : SoundServer::p\Stop=@SNDH_Pause
 ;
 ; Load Song
 ;
-Procedure.l SNDH_LoadFile(file.s) 
+
+; nb: in theory sndh_mem should be stored in STRUCT_AUDIOSERVER
+; however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
+; this shouldn't matter anyway as once SNDH_Load() has been given the
+; memory containing the sndh file data, sndh_mem becomes orphaned by vertue
+; of SNDH_Load() internally decompressing the sndh file from ICE and thus
+; it is now working from the decompressed data not the memory we gave it.
+;
+Procedure.l SNDH_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
   If fn
     filesize = FileSize(file) 
@@ -139,7 +136,7 @@ EndProcedure
 ;*****************************************************************************
 SNDH_OpenLibrary()
 
-sound = SNDH_LoadFile("decade_demo-loader.sndh")
+sound = SNDH_LoadMusic("decade_demo-loader.sndh")
 SNDH_InitSubSong(1)
 
 
@@ -149,8 +146,8 @@ Debug sound
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 82
-; FirstLine = 54
+; CursorPosition = 106
+; FirstLine = 78
 ; Folding = --
 ; EnableXP
 ; DPIAware
