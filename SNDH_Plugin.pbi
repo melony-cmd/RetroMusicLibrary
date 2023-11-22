@@ -78,21 +78,21 @@ EndProcedure : SoundServer::p\Render=@SNDH_Render
 ;
 ; Play Thread 
 ;
-Procedure SNDH_Play(*sound)
-  *this.SoundServer::STRUCT_PUBLIC_AUDIOSERVER
-  CopyStructure(*sound,*this, SoundServer::STRUCT_PUBLIC_AUDIOSERVER)
-  
-  If SoundServer::Open(*this,SoundServer::p\Render,500)
-    Repeat  
-      Delay(1) 
-    Until *this\kill 
-    SoundServer::Close(*this);
-    If MemorySize(*this\sndh_mem) 
-      FreeMemory(*this\sndh_mem)
-    EndIf 
-    FreeMemory(*this) 
-    *this = 0 
-  EndIf 
+Procedure SNDH_Play(*sound)  
+;   *this.SoundServer::STRUCT_PUBLIC_AUDIOSERVER = SoundServer::Get_AudioServerStruct()
+;   CopyStructure(*sound,*this,SoundServer::STRUCT_PUBLIC_AUDIOSERVER)
+;  
+;   If SoundServer::Open(*this,SoundServer::p\Render,500)
+;     Repeat  
+;       Delay(1) 
+;     Until *this\kill 
+;     SoundServer::Close(*this);
+;     If MemorySize(*this\sndh_mem) 
+;       FreeMemory(*this\sndh_mem)
+;     EndIf 
+;     FreeMemory(*this) 
+;    *this = 0 
+;   EndIf 
 EndProcedure : SoundServer::p\Play=@SNDH_Play
 
 ;
@@ -160,12 +160,13 @@ SNDH_OpenLibrary()
 
 If SNDH_LoadMusic("decade_demo-loader.sndh")=1
   SNDH_InitSubSong(1)
+  SoundServer::Play()  
 EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 88
-; FirstLine = 23
+; CursorPosition = 162
+; FirstLine = 123
 ; Folding = --
 ; EnableXP
 ; DPIAware
