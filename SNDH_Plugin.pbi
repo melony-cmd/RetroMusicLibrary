@@ -69,11 +69,11 @@ EndProcedure
 ;
 Procedure SNDH_Render(pmusic,*pBuffer,size.i)
   Protected nbSample
-  Debug "Hello World!"
-  If (pMusic)
-    nbSample = size >> 1;    
-    SNDH_AudioRender(*pBuffer,nbSample)
-  EndIf 
+  Debug "SNDH_Render()"
+  ;If (pMusic)
+  ;  nbSample = size >> 1;    
+  ;  SNDH_AudioRender(*pBuffer,nbSample)
+  ;EndIf 
 EndProcedure : SoundServer::p\Render=@SNDH_Render
 
 ;
@@ -171,8 +171,8 @@ EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 164
-; FirstLine = 129
+; CursorPosition = 74
+; FirstLine = 54
 ; Folding = --
 ; EnableXP
 ; DPIAware

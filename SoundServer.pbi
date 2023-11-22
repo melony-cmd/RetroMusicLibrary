@@ -2,6 +2,13 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
+;*****************************************************************************
+; Enumeration of File Format Types
+;*****************************************************************************
+Enumeration
+  #RML_YM2149SSND
+  #RML_SNDH
+EndEnumeration
 
 ;*****************************************************************************
 ; Declaration of Sound Server
@@ -23,10 +30,11 @@ DeclareModule SoundServer
     Stop.l
     Play.l
     Pause.l
-    Render.l
+    *Render
   EndStructure  
   p.STRUCT_PLUGIN
       
+  Declare Render_CallBack(pmusic,*pBuffer,size.i)
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
   Declare Play()
@@ -139,29 +147,15 @@ Module SoundServer
     EndIf 
     
     If (s_audioserver\m_pUserCallback)      
-      ;argument 0 = s_audioserver\m_pUserCallback == valid
-      ;argument 1 = ?
-      ;argument 2 = correct
-      ;argument 3 = correct
-      ;-- so why the f!@#!%! is it producing an "[ERROR] Invalid memory access. (write error at address 0)" !?!?
-      
-      ; okay we've figured out why! this is the part of code that actually is supposed to call the audio ??_Render()
-      ; procedure within the ??_plugin.pbi the address off it is actually in 2 places.
-      ; SoundServer::p\Render & s_audioserver\m_pUserCallback
-      ; for some reason it doesn't want to call it, "[ERROR] Invalid memory access. (write error at address 0)"
-      
-      ; interestingly if we revert to using the "Callback" procedure located in this module it calls it without issue!
-      ; calling out of that to the ??_plugin render procedure produces [ERROR] Invalid memory access. (write error at address 0)
-      
       Debug "FillNextBuffer()"
       Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
       Debug "SoundServer::p\Pause="+Str(SoundServer::p\Pause)
       Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
       Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
-      Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)
-      ;s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
-      ;CallFunctionFast(SoundServer::p\Pause)
-      
+      Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)     
+      s_audioserver\m_pUserCallback(@Render_CallBack(),
+                                    s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],
+                                    s_audioserver\m_bufferSize)
     EndIf 
     
     If s_audioserver\pause 
@@ -183,13 +177,22 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure CallBack(pmusic,*pBuffer,size.i)
+  Procedure Render_CallBack(pmusic,*pBuffer,size.i)
     Protected nbSample
-    Debug "CallBack()"
+    Debug "Render_CallBack()"
     If (pMusic)
       nbSample = size >> 1;
-      ;instead references the structure above to find the address in ??_Plugin.pbi to render.      
-      CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
+      ;instead references the structure above to find the address in ??_Plugin.pbi to render.                  
+      Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
+      Debug "pMusic="+Str(pMusic)
+      Debug "*pBuffer="+Str(*pBuffer)
+      Debug "nbSample="+Str(nbSample)
+      ;CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
+      
+      
+
+      
+      
     EndIf        
   EndProcedure 
   
@@ -211,7 +214,7 @@ Module SoundServer
   ;
   Procedure Play()    
     ;If SoundServer::Open(SoundServer::p\Render,500)
-    If SoundServer::Open(@CallBack(),500)
+    If SoundServer::Open(@Render_CallBack(),500)
     EndIf    
   EndProcedure
     
@@ -244,8 +247,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 162
-; FirstLine = 135
+; CursorPosition = 190
+; FirstLine = 172
 ; Folding = --
 ; EnableXP
 ; DPIAware
