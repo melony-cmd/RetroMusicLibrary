@@ -15,3 +15,4 @@ Adlib, ASAP, AyFly, Bizzic2, Euphony, FLAC, Furnace, FutureComposer, GBSPlay, GM
 HighlyExperimental, HighlyQuixotic, HighlyTheoretical, Hively, IXalance, KSS, LazyUSF, MDX, MP3, NEZplug, OpenMPT
 ProTracker, Quartet, SC68, SidPlay, SoundMon, TFMX, TIATracker, UADE, V2, VGM, VIO2SF, Vorbis, Wav, ZXTune
 
+Insert any other format I might find.
