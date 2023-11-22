@@ -155,11 +155,13 @@ Module SoundServer
       
       Debug "FillNextBuffer()"
       Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
+      Debug "SoundServer::p\Pause="+Str(SoundServer::p\Pause)
       Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
       Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
       Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)
-;(a)      CallFunctionFast(SoundServer::p\Render,0,0,0)
-      s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
+      ;s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
+      ;CallFunctionFast(SoundServer::p\Pause)
+      
     EndIf 
     
     If s_audioserver\pause 
@@ -242,8 +244,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 153
-; FirstLine = 137
+; CursorPosition = 162
+; FirstLine = 135
 ; Folding = --
 ; EnableXP
 ; DPIAware

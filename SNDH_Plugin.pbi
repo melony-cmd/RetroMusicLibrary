@@ -106,7 +106,8 @@ EndProcedure : SoundServer::p\Stop=@SNDH_Stop
 ; Pause
 ;
 Procedure SNDH_Pause()
-EndProcedure : SoundServer::p\Stop=@SNDH_Pause
+  Debug "-=Pause=-"
+EndProcedure : SoundServer::p\Pause=@SNDH_Pause
 
 ;*****************************************************************************
 ; Helpper Procedures
@@ -170,8 +171,8 @@ EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 163
-; FirstLine = 128
+; CursorPosition = 164
+; FirstLine = 129
 ; Folding = --
 ; EnableXP
 ; DPIAware
