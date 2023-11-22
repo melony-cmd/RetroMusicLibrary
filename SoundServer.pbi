@@ -149,14 +149,17 @@ Module SoundServer
       ; procedure within the ??_plugin.pbi the address off it is actually in 2 places.
       ; SoundServer::p\Render & s_audioserver\m_pUserCallback
       ; for some reason it doesn't want to call it, "[ERROR] Invalid memory access. (write error at address 0)"
-            
+      
+      ; interestingly if we revert to using the "Callback" procedure located in this module it calls it without issue!
+      ; calling out of that to the ??_plugin render procedure produces [ERROR] Invalid memory access. (write error at address 0)
+      
       Debug "FillNextBuffer()"
       Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
       Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
       Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
       Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)
 ;(a)      CallFunctionFast(SoundServer::p\Render,0,0,0)
-;(b)      s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
+      s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
     EndIf 
     
     If s_audioserver\pause 
@@ -179,7 +182,8 @@ Module SoundServer
   ;
   ;
   Procedure CallBack(pmusic,*pBuffer,size.i)
-    Protected nbSample       
+    Protected nbSample
+    Debug "CallBack()"
     If (pMusic)
       nbSample = size >> 1;
       ;instead references the structure above to find the address in ??_Plugin.pbi to render.      
@@ -204,7 +208,8 @@ Module SoundServer
   ;
   ;
   Procedure Play()    
-    If SoundServer::Open(SoundServer::p\Render,500)
+    ;If SoundServer::Open(SoundServer::p\Render,500)
+    If SoundServer::Open(@CallBack(),500)
     EndIf    
   EndProcedure
     
@@ -237,8 +242,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 156
-; FirstLine = 125
+; CursorPosition = 153
+; FirstLine = 137
 ; Folding = --
 ; EnableXP
 ; DPIAware
