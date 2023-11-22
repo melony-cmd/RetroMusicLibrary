@@ -26,25 +26,7 @@ DeclareModule SoundServer
     Render.l
   EndStructure  
   p.STRUCT_PLUGIN
-  
-  ;
-  ; w.i.p
-  ;
-;  Structure STRUCT_PUBLIC_AUDIOSERVER 
-;    tid.i
-;    kill.i
-;    type.l
-;    pause.l
-;    *sndh_mem
-;    m_pmusic.l
-;    m_bufferSize.l
-;    m_currentBuffer.l
-;    m_hWaveOut.l 
-;    m_waveHeader.WAVEHDR[#REPLAY_NBSOUNDBUFFER]
-;    *m_pSoundBuffer[#REPLAY_NBSOUNDBUFFER]
-;    *m_pUserCallback.pUSERCALLBACK 	 
-;  EndStructure 
-    
+      
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
   Declare Play()
@@ -86,11 +68,12 @@ Module SoundServer
   ;
   Procedure WaveOut_CallBack(hwo.l,uMsg.l,dwInstance.l,dwParam1.l,dwParam2.l)
     Protected *pserver.STRUCT_AUDIOSERVER
+    Debug "WaveOut_CallBack()"
     If (#WOM_DONE = uMsg)      
       *pServer = dwInstance;
       If *pServer        
         If *pServer\m_pUserCallback <> #Null 
-          ;FillNextBuffer()
+          FillNextBuffer()
         EndIf   
       EndIf 
     EndIf     
@@ -99,7 +82,6 @@ Module SoundServer
   ;
   ;
   ;
-  ;Procedure Open(*this.STRUCT_AUDIOSERVER,pUserCallback,totalBufferedSoundLen.l=4000)
   Procedure Open(pUserCallback,totalBufferedSoundLen.l=4000)    
     s_audioserver\m_pUserCallback = pUserCallback;
     s_audioserver\m_bufferSize = ((totalBufferedSoundLen * #REPLAY_RATE) / 1000) * #REPLAY_SAMPLELEN
@@ -156,12 +138,25 @@ Module SoundServer
       waveOutUnprepareHeader_(s_audioserver\m_hWaveOut,@s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],SizeOf(WAVEHDR));
     EndIf 
     
-    If (s_audioserver\m_pUserCallback)
-      ;argument 0 = ?
-      ;argument 1 = correct
+    If (s_audioserver\m_pUserCallback)      
+      ;argument 0 = s_audioserver\m_pUserCallback == valid
+      ;argument 1 = ?
       ;argument 2 = correct
+      ;argument 3 = correct
       ;-- so why the f!@#!%! is it producing an "[ERROR] Invalid memory access. (write error at address 0)" !?!?
-      s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
+      
+      ; okay we've figured out why! this is the part of code that actually is supposed to call the audio ??_Render()
+      ; procedure within the ??_plugin.pbi the address off it is actually in 2 places.
+      ; SoundServer::p\Render & s_audioserver\m_pUserCallback
+      ; for some reason it doesn't want to call it, "[ERROR] Invalid memory access. (write error at address 0)"
+            
+      Debug "FillNextBuffer()"
+      Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
+      Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
+      Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
+      Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)
+;(a)      CallFunctionFast(SoundServer::p\Render,0,0,0)
+;(b)      s_audioserver\m_pUserCallback(s_audioserver,s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],s_audioserver\m_bufferSize)
     EndIf 
     
     If s_audioserver\pause 
@@ -208,9 +203,8 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure Play()
+  Procedure Play()    
     If SoundServer::Open(SoundServer::p\Render,500)
-
     EndIf    
   EndProcedure
     
@@ -243,8 +237,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 165
-; FirstLine = 138
+; CursorPosition = 156
+; FirstLine = 125
 ; Folding = --
 ; EnableXP
 ; DPIAware

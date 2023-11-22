@@ -68,7 +68,8 @@ EndProcedure
 ; Render Procedure for Source Server
 ;
 Procedure SNDH_Render(pmusic,*pBuffer,size.i)
-  Protected nbSample   
+  Protected nbSample
+  Debug "Hello World!"
   If (pMusic)
     nbSample = size >> 1;    
     SNDH_AudioRender(*pBuffer,nbSample)
@@ -160,13 +161,17 @@ SNDH_OpenLibrary()
 
 If SNDH_LoadMusic("decade_demo-loader.sndh")=1
   SNDH_InitSubSong(1)
-  SoundServer::Play()  
+    
+  SoundServer::Play()
+  
+  Delay(15000)
+  
 EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 162
-; FirstLine = 123
+; CursorPosition = 163
+; FirstLine = 128
 ; Folding = --
 ; EnableXP
 ; DPIAware
