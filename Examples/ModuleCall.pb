@@ -2,8 +2,8 @@
 DeclareModule Apples
   
   Structure basketlist
-    slot1.l
-    slot2.l
+    *slot1
+    *slot2
   EndStructure
   Global b.basketlist
   
@@ -38,7 +38,7 @@ Apples::GetApples()
 ForEver
   
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 38
+; CursorPosition = 20
 ; Folding = -
 ; EnableXP
 ; DPIAware

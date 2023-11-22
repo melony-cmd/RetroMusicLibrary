@@ -3,7 +3,7 @@
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
 #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
-  
+
 Structure SubSongInfo
     subsongCount.i
     playerTickCount.i
@@ -70,11 +70,11 @@ EndProcedure
 Procedure SNDH_Render(pmusic,*pBuffer,size.i)
   Protected nbSample
   Debug "SNDH_Render()"
-  ;If (pMusic)
-  ;  nbSample = size >> 1;    
-  ;  SNDH_AudioRender(*pBuffer,nbSample)
-  ;EndIf 
-EndProcedure : SoundServer::p\Render=@SNDH_Render
+  If (pMusic)
+    nbSample = size >> 1;    
+    SNDH_AudioRender(*pBuffer,nbSample)
+  EndIf 
+EndProcedure : SoundServer::p\Render=@SNDH_Render()
 
 ;
 ; Play Thread 
@@ -94,20 +94,20 @@ Procedure SNDH_Play(*sound)
 ;     FreeMemory(*this) 
 ;    *this = 0 
 ;   EndIf 
-EndProcedure : SoundServer::p\Play=@SNDH_Play
+EndProcedure : SoundServer::p\Play=@SNDH_Play()
 
 ;
 ; Stop
 ;
 Procedure SNDH_Stop()
-EndProcedure : SoundServer::p\Stop=@SNDH_Stop
+EndProcedure : SoundServer::p\Stop=@SNDH_Stop()
 
 ;
 ; Pause
 ;
 Procedure SNDH_Pause()
   Debug "-=Pause=-"
-EndProcedure : SoundServer::p\Pause=@SNDH_Pause
+EndProcedure : SoundServer::p\Pause=@SNDH_Pause()
 
 ;*****************************************************************************
 ; Helpper Procedures
@@ -158,6 +158,9 @@ EndProcedure
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
+
+Debug @SNDH_Render()
+
 SNDH_OpenLibrary()
 
 If SNDH_LoadMusic("decade_demo-loader.sndh")=1
@@ -165,14 +168,14 @@ If SNDH_LoadMusic("decade_demo-loader.sndh")=1
     
   SoundServer::Play()
   
-  Delay(15000)
+  Delay(25000)
   
 EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 74
-; FirstLine = 54
+; CursorPosition = 170
+; FirstLine = 132
 ; Folding = --
 ; EnableXP
 ; DPIAware

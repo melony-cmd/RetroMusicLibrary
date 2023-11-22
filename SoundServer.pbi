@@ -27,9 +27,9 @@ DeclareModule SoundServer
     ; Current Plugin (.dll pointer)
     library.l
     ; Procedure Addresses
-    Stop.l
-    Play.l
-    Pause.l
+    *Stop
+    *Play
+    *Pause
     *Render
   EndStructure  
   p.STRUCT_PLUGIN
@@ -187,11 +187,7 @@ Module SoundServer
       Debug "pMusic="+Str(pMusic)
       Debug "*pBuffer="+Str(*pBuffer)
       Debug "nbSample="+Str(nbSample)
-      ;CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
-      
-      
-
-      
+      CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
       
     EndIf        
   EndProcedure 
@@ -247,8 +243,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 190
-; FirstLine = 172
+; CursorPosition = 189
+; FirstLine = 168
 ; Folding = --
 ; EnableXP
 ; DPIAware
