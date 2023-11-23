@@ -165,9 +165,14 @@ Module SoundServer
     s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer]\lpData = s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer];
     s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer]\dwBufferLength = s_audioserver\m_bufferSize
     ;
-    waveOutPrepareHeader_(s_audioserver\m_hWaveOut,@s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],SizeOf(WAVEHDR));        
-    waveOutWrite_(s_audioserver\m_hWaveOut,@s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],SizeOf(WAVEHDR));
-     
+    waveOutPrepareHeader_(s_audioserver\m_hWaveOut,
+                          @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
+                          SizeOf(WAVEHDR));        
+    
+    waveOutWrite_(s_audioserver\m_hWaveOut,
+                  @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
+                  SizeOf(WAVEHDR));
+       
     s_audioserver\m_currentBuffer+1
     If s_audioserver\m_currentBuffer >= #REPLAY_NBSOUNDBUFFER
       s_audioserver\m_currentBuffer = 0;
@@ -187,8 +192,7 @@ Module SoundServer
       Debug "pMusic="+Str(pMusic)
       Debug "*pBuffer="+Str(*pBuffer)
       Debug "nbSample="+Str(nbSample)
-      CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
-      
+      CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)      
     EndIf        
   EndProcedure 
   
@@ -209,8 +213,13 @@ Module SoundServer
   ;
   ;
   Procedure Play()    
-    ;If SoundServer::Open(SoundServer::p\Render,500)
     If SoundServer::Open(@Render_CallBack(),500)
+      
+      ;I don't understand the point of this thread?
+      ;A. The callbacks function irrespective the thread existing or not.
+      ;B. the thread other than looping doesn't do anything within the loop to either
+      ;   fill the buffer or pretty much anything other than delay see point (a)
+           
     EndIf    
   EndProcedure
     
@@ -243,8 +252,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 189
-; FirstLine = 168
+; CursorPosition = 174
+; FirstLine = 138
 ; Folding = --
 ; EnableXP
 ; DPIAware

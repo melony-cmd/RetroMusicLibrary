@@ -79,29 +79,20 @@ Procedure SNDH_Render(pmusic,*pBuffer,size.i)
   Protected nbSample
   Debug "SNDH_Render()"
   If (pMusic)
+    Debug "size = "+Str(size)
     nbSample = size >> 1;    
-    SNDH_AudioRender(*pBuffer,nbSample)
+    SNDH_AudioRender(*pBuffer,nbSample*2) ;<----- BUG WAS HERE nbSample was not large enough, why wasn't it?
   EndIf 
 EndProcedure : SoundServer::p\Render=@SNDH_Render()
 
 ;
 ; Play Thread 
 ;
-Procedure SNDH_Play(*sound)  
-;   *this.SoundServer::STRUCT_PUBLIC_AUDIOSERVER = SoundServer::Get_AudioServerStruct()
-;   CopyStructure(*sound,*this,SoundServer::STRUCT_PUBLIC_AUDIOSERVER)
-;  
-;   If SoundServer::Open(*this,SoundServer::p\Render,500)
-;     Repeat  
-;       Delay(1) 
-;     Until *this\kill 
-;     SoundServer::Close(*this);
-;     If MemorySize(*this\sndh_mem) 
-;       FreeMemory(*this\sndh_mem)
-;     EndIf 
-;     FreeMemory(*this) 
-;    *this = 0 
-;   EndIf 
+Procedure SNDH_Play(*sound)
+  Debug "--- Play Thread ---"
+  Repeat  
+    Delay(1) 
+  ForEver
 EndProcedure : SoundServer::p\Play=@SNDH_Play()
 
 ;
@@ -182,8 +173,8 @@ EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 30
-; FirstLine = 3
+; CursorPosition = 83
+; FirstLine = 56
 ; Folding = --
 ; EnableXP
 ; DPIAware
