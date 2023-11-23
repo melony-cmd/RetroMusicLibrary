@@ -5,7 +5,7 @@ Pure Basic includes for playing old retro music, is the basic core functionality
 let me be very clear and also controdic myself, RML is not and will not -ever- be a GUI player and I will condem anyone that use it to do so directly, because we have damn ably enough of them already.
 
 # No gui player then?
-No, remember I said I'd controdic myself? yes but on in this project githib page, when or if I make one for DEBUGGING PURPOSES ONLY that will be it's own thing separate from this one.
+No, remember I said I'd controdic myself? yes but not in this project githib page, when or if I make one for DEBUGGING PURPOSES ONLY that will be it's own thing separate from this one.
 
 # Status
 SNDH - plays but hiccups.
