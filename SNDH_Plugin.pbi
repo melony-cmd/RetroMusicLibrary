@@ -4,6 +4,10 @@
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
 #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
 
+;*****************************************************************************
+; Structure SNDH
+;*****************************************************************************
+
 Structure SubSongInfo
     subsongCount.i
     playerTickCount.i
@@ -14,13 +18,17 @@ Structure SubSongInfo
     *year
 EndStructure
 
+;*****************************************************************************
+; Prototypes SNDH
+;*****************************************************************************
+
 PrototypeC.b SNDH_Load(*rawSndhFile,sndhFileSize.i,hostReplayRate.i) : Global SNDH_Load.SNDH_Load
 PrototypeC   SNDH_Unload()                                           : Global SNDH_Unload.SNDH_Unload
 PrototypeC.b SNDH_InitSubSong(subSongId.i)                           : Global SNDH_InitSubSong.SNDH_InitSubSong
 PrototypeC.i SNDH_AudioRender(*buffer,count.i,*pSampleViewInfo = 0)  : Global SNDH_AudioRender.SNDH_AudioRender
 PrototypeC.i SNDH_GetSubsongCount()                                  : Global SNDH_GetSubsongCount.SNDH_GetSubsongCount
 PrototypeC.i SNDH_GetDefaultSubsong()                                : Global SNDH_GetDefaultSubsong.SNDH_GetDefaultSubsong
-PrototypeC.b SNDH_GetSubsongInfo(subSongId.i,*sndhinfo);
+PrototypeC.b SNDH_GetSubSongInfo(subSongId.i,*sndhinfo)              : Global SNDH_GetSubSongInfo.SNDH_GetSubSongInfo 
 
 PrototypeC   SNDH_GetRawData()                                       : Global SNDH_GetRawData.SNDH_GetRawData
 PrototypeC.i SNDH_GetRawDataSize()                                   : Global SNDH_GetRawDataSize.SNDH_GetRawDataSize
@@ -174,8 +182,8 @@ EndIf
 
 SNDH_CloseLibrary()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 170
-; FirstLine = 132
+; CursorPosition = 30
+; FirstLine = 3
 ; Folding = --
 ; EnableXP
 ; DPIAware
