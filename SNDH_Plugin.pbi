@@ -2,6 +2,9 @@
 ;Windows x86 
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
+
+#SNDH_DEBUG_PLUGIN = #True
+
 #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
 
 ;*****************************************************************************
@@ -28,7 +31,7 @@ PrototypeC.b SNDH_InitSubSong(subSongId.i)                           : Global SN
 PrototypeC.i SNDH_AudioRender(*buffer,count.i,*pSampleViewInfo = 0)  : Global SNDH_AudioRender.SNDH_AudioRender
 PrototypeC.i SNDH_GetSubsongCount()                                  : Global SNDH_GetSubsongCount.SNDH_GetSubsongCount
 PrototypeC.i SNDH_GetDefaultSubsong()                                : Global SNDH_GetDefaultSubsong.SNDH_GetDefaultSubsong
-PrototypeC.b SNDH_GetSubSongInfo(subSongId.i,*sndhinfo)              : Global SNDH_GetSubSongInfo.SNDH_GetSubSongInfo 
+PrototypeC.b SNDH_GetSubSongInfo(subSongId.i,*pinfo)                 : Global SNDH_GetSubSongInfo.SNDH_GetSubSongInfo 
 
 PrototypeC   SNDH_GetRawData()                                       : Global SNDH_GetRawData.SNDH_GetRawData
 PrototypeC.i SNDH_GetRawDataSize()                                   : Global SNDH_GetRawDataSize.SNDH_GetRawDataSize
@@ -77,11 +80,8 @@ EndProcedure
 ;
 Procedure SNDH_Render(pmusic,*pBuffer,size.i)
   Protected nbSample
-  Debug "SNDH_Render()"
   If (pMusic)
-    Debug "size = "+Str(size)
-    nbSample = size >> 1;    
-    SNDH_AudioRender(*pBuffer,nbSample*2) ;<----- BUG WAS HERE nbSample was not large enough, why wasn't it?
+    SNDH_AudioRender(*pBuffer,size)
   EndIf 
 EndProcedure : SoundServer::p\Render=@SNDH_Render()
 
@@ -112,26 +112,21 @@ EndProcedure : SoundServer::p\Pause=@SNDH_Pause()
 ; Helpper Procedures
 ;*****************************************************************************
 
-;
 ; Load Song
 ; Arguments = FileName
 ; Results = 0 = Failure, 1 = Success
 
-;
 ; nb: in theory sndh_mem should be stored in STRUCT_AUDIOSERVER
 ; however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
 ; this shouldn't matter anyway as once SNDH_Load() has been given the
 ; memory containing the sndh file data, sndh_mem becomes orphaned by vertue
 ; of SNDH_Load() internally decompressing the sndh file from ICE and thus
 ; it is now working from the decompressed data not the memory we gave it.
-;
 
 ; All of that said; it's quite possible to have an uncompressed sndh file
 ; though rare! so it should not be assumed that we can actually free it,
 ; now if we was talking about flac/mp3 or other formats I'd be really 
-; concerned about over memory usage.
-
-; thus it's commented out for now.
+; concerned about over memory usage, even still it does now free the memory.
 
 Procedure.l SNDH_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
@@ -143,38 +138,45 @@ Procedure.l SNDH_LoadMusic(file.s)
       result = SNDH_Load(sndh_mem,filesize,44100)
       ; we no longer need the file anymore SNDH.dll 
       ; has used ICE to decompress it.
-      ; FreeMemory(sndh_mem)                  
+      FreeMemory(sndh_mem)                  
     EndIf      
     CloseFile(fn)
   EndIf  
   ProcedureReturn result
 EndProcedure
-
-;
-;
-; 
   
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
-
-Debug @SNDH_Render()
-
-SNDH_OpenLibrary()
-
-If SNDH_LoadMusic("decade_demo-loader.sndh")=1
-  SNDH_InitSubSong(1)
+CompilerIf #SNDH_DEBUG_PLUGIN = #True  
+  SNDH_OpenLibrary()
+  
+  info.SubSongInfo
+  
+  If SNDH_LoadMusic("decade_demo-loader.sndh")=1
+    SNDH_InitSubSong(1)
+    SNDH_GetSubSongInfo(1,@info)   
+    Debug "info\musicName = "+PeekS(info\musicName,-1,#PB_Ascii)
+    Debug "info\Author = "+PeekS(info\musicAuthor,-1,#PB_Ascii)
     
-  SoundServer::Play()
-  
-  Delay(25000)
-  
-EndIf
-
-SNDH_CloseLibrary()
+    If info\year<>#Null
+      Debug "info\musicName = "+PeekS(info\year,-1,#PB_Ascii)
+    EndIf
+    
+    Debug "info\playerTickCount = "+Str(info\playerTickCount)
+    Debug "info\playerTickRate = "+Str(info\playerTickRate)
+    Debug "info\samplePerTick = "+Str(info\samplePerTick)
+    Debug "info\subsongCount = "+Str(info\subsongCount)
+    
+    SoundServer::Play()
+    
+    Delay(25000)    
+  EndIf  
+  SNDH_CloseLibrary()
+CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 83
-; FirstLine = 56
+; CursorPosition = 175
+; FirstLine = 133
 ; Folding = --
 ; EnableXP
 ; DPIAware

@@ -47,7 +47,7 @@ IncludeFile "SoundServer.pbi"
 ;*****************************************************************************
 ; Initalize SNDH
 ;*****************************************************************************
-Procedure YM_OpenLibrary(library.s=#SNDH_PLUGIN)
+Procedure YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
   plugin = OpenLibrary(#PB_Any,#YM2149SSND_PLUGIN)
   If plugin
     YM_Init = GetFunction(plugin, "YM_Init")
@@ -99,8 +99,8 @@ EndProcedure : SoundServer::p\Render=@YM_Render()
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 70
-; FirstLine = 34
+; CursorPosition = 49
+; FirstLine = 24
 ; Folding = -
 ; EnableXP
 ; DPIAware

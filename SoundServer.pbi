@@ -2,6 +2,7 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
+
 ;*****************************************************************************
 ; Enumeration of File Format Types
 ;*****************************************************************************
@@ -45,7 +46,9 @@ EndDeclareModule
 ; Sound Server
 ;*****************************************************************************
 Module SoundServer
-   
+  
+  #DEBUG_SOUNDSERVER = #False
+  
   Prototype pUSERCALLBACK(pmusic,*pBuffer,bufferlen.l)
   
   Structure STRUCT_AUDIOSERVER 
@@ -76,7 +79,6 @@ Module SoundServer
   ;
   Procedure WaveOut_CallBack(hwo.l,uMsg.l,dwInstance.l,dwParam1.l,dwParam2.l)
     Protected *pserver.STRUCT_AUDIOSERVER
-    Debug "WaveOut_CallBack()"
     If (#WOM_DONE = uMsg)      
       *pServer = dwInstance;
       If *pServer        
@@ -146,13 +148,15 @@ Module SoundServer
       waveOutUnprepareHeader_(s_audioserver\m_hWaveOut,@s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],SizeOf(WAVEHDR));
     EndIf 
     
-    If (s_audioserver\m_pUserCallback)      
-      Debug "FillNextBuffer()"
-      Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
-      Debug "SoundServer::p\Pause="+Str(SoundServer::p\Pause)
-      Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
-      Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
-      Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)     
+    If (s_audioserver\m_pUserCallback)
+      CompilerIf #DEBUG_SOUNDSERVER = #True
+        Debug "FillNextBuffer()"
+        Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
+        Debug "SoundServer::p\Pause="+Str(SoundServer::p\Pause)
+        Debug "s_audioserver\m_bufferSize="+Str(s_audioserver\m_bufferSize)     
+        Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
+        Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
+      CompilerEndIf
       s_audioserver\m_pUserCallback(@Render_CallBack(),
                                     s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],
                                     s_audioserver\m_bufferSize)
@@ -184,14 +188,15 @@ Module SoundServer
   ;
   Procedure Render_CallBack(pmusic,*pBuffer,size.i)
     Protected nbSample
-    Debug "Render_CallBack()"
     If (pMusic)
       nbSample = size >> 1;
-      ;instead references the structure above to find the address in ??_Plugin.pbi to render.                  
-      Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
-      Debug "pMusic="+Str(pMusic)
-      Debug "*pBuffer="+Str(*pBuffer)
-      Debug "nbSample="+Str(nbSample)
+      CompilerIf #DEBUG_SOUNDSERVER = #True
+        Debug "Render_CallBack()"
+        Debug "SoundServer::p\Render="+Str(SoundServer::p\Render)
+        Debug "pMusic="+Str(pMusic)
+        Debug "*pBuffer="+Str(*pBuffer)
+        Debug "nbSample="+Str(nbSample)
+      CompilerEndIf
       CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)      
     EndIf        
   EndProcedure 
@@ -252,8 +257,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 174
-; FirstLine = 138
+; CursorPosition = 81
+; FirstLine = 69
 ; Folding = --
 ; EnableXP
 ; DPIAware
