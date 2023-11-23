@@ -1,8 +1,14 @@
-# RetroMusicLibrary
-Pure Basic includes for playing old retro music
+# What is Retro Music Library
+Pure Basic includes for playing old retro music, is the basic core functionality to audibly hear retro music, its a library of as many as I can making plug-ins for.
+
+# What it is not?
+let me be very clear and also controdic myself, RML is not and will not -ever- be a GUI player and I will condem anyone that use it to do so directly, because we have damn ably enough of them already.
+
+# No gui player then?
+No, remember I said I'd controdic myself? yes but not in this project githib page, when or if I make one for DEBUGGING PURPOSES ONLY that will be it's own thing separate from this one.
 
 # Status
-Currently doesn't play anything as I'm trying to work on a system to easierly add new formats.
+SNDH - plays but hiccups.
 
 # Current music types being worked on
 YM, SNDH
