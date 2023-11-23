@@ -1,4 +1,4 @@
-﻿;Author Idle 
+﻿;Author T.J.Roughton (Inner)
 ;Windows x86 
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
@@ -42,9 +42,26 @@ IncludeFile "SoundServer.pbi"
 ; Initalize SNDH
 ;*****************************************************************************
 
-;
-; SNDH - OpenLibrary
-;
+;/****** SNDH_Plugin.pbi/SNDH_OpenLibrary ************************************
+;* 
+;*   NAME	
+;* 	     SNDH_OpenLibrary -- Opens SNDH dll.
+;*
+;*   SYNOPSIS
+;*	     long library = SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)
+;*
+;*   FUNCTION
+;*       Prototype the DLL functions.
+;*
+;*   INPUTS
+;* 	     string library - can be ignored if the dll is in the location
+;*       held in #SNDH_PLUGIN, else you can pass your own path.
+;*	
+;*   RESULT
+;*       library pointer - value passed back from OpenLibrary()
+;* 	     error - #False
+;* 
+;*****************************************************************************
 Procedure SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)  
   dll_plugin = OpenLibrary(#PB_Any,library)
   If dll_plugin
@@ -60,21 +77,31 @@ Procedure SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)
     
     SoundServer::p\library = dll_plugin
   Else 
-    MessageRequester("error","Can't open "+library) 
-  EndIf  
+    ProcedureReturn #False    
+  EndIf
+  ProcedureReturn dll_plugin
 EndProcedure
 
-;
-; SNDH - Close Library
-;
-Procedure SNDH_CloseLibrary()
+;/****** SNDH_Plugin.pbi/SNDH_Close ******************************************
+;* 
+;*   NAME	
+;* 	     SNDH_Close -- Shut down SNDH dll
+;*
+;*   FUNCTION
+;*       Closes the server library currently open. While it might seem still
+;*       ridiculous to wrapper such a function as CloseLibrary() in this way
+;*       it's future proofing, in the event that futre additions might require
+;*       more deinitializing than just simply closing the library.
+;* 
+;*****************************************************************************
+Procedure SNDH_Close()
   CloseLibrary(SoundServer::p\library)
 EndProcedure
 
 ;*****************************************************************************
 ; Sound Server Procedures
 ;*****************************************************************************
-
+  
 ;
 ; Render Procedure for Source Server
 ;
@@ -83,7 +110,7 @@ Procedure SNDH_Render(pmusic,*pBuffer,size.i)
   If (pMusic)
     SNDH_AudioRender(*pBuffer,size)
   EndIf 
-EndProcedure : SoundServer::p\Render=@SNDH_Render()
+EndProcedure 
 
 ;
 ; Play Thread 
@@ -93,20 +120,29 @@ Procedure SNDH_Play(*sound)
   Repeat  
     Delay(1) 
   ForEver
-EndProcedure : SoundServer::p\Play=@SNDH_Play()
+EndProcedure 
 
 ;
 ; Stop
 ;
 Procedure SNDH_Stop()
-EndProcedure : SoundServer::p\Stop=@SNDH_Stop()
+EndProcedure 
 
 ;
 ; Pause
 ;
 Procedure SNDH_Pause()
-  Debug "-=Pause=-"
-EndProcedure : SoundServer::p\Pause=@SNDH_Pause()
+EndProcedure
+
+;
+; SNDH Initialize SoundServer
+;
+Procedure SNDH_Initialize_SoundServer()
+  SoundServer::p\Render=@SNDH_Render()
+  SoundServer::p\Play=@SNDH_Play()
+  SoundServer::p\Stop=@SNDH_Stop()
+  SoundServer::p\Pause=@SNDH_Pause()
+EndProcedure
 
 ;*****************************************************************************
 ; Helpper Procedures
@@ -148,7 +184,8 @@ EndProcedure
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
-CompilerIf #SNDH_DEBUG_PLUGIN = #True  
+CompilerIf #SNDH_DEBUG_PLUGIN = #True
+  SNDH_Initialize_SoundServer()
   SNDH_OpenLibrary()
   
   info.SubSongInfo
@@ -172,11 +209,11 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
     
     Delay(25000)    
   EndIf  
-  SNDH_CloseLibrary()
+  SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 175
-; FirstLine = 133
+; CursorPosition = 212
+; FirstLine = 170
 ; Folding = --
 ; EnableXP
 ; DPIAware

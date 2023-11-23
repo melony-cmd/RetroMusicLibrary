@@ -2,7 +2,27 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
+
 #YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
+
+Enumeration
+  #YM_REG_PERIOD_VOICE_A
+  #YM_REG_FINE_PERIOD_VOICE_A
+  #YM_REG_PERIOD_VOICE_B
+  #YM_REG_FINE_PERIOD_VOICE_B
+  #YM_REG_PERIOD_VOICE_C
+  #YM_REG_FINE_PERIOD_VOICE_C
+  #YM_REG_NOISE_PERIOD
+  #YM_REG_MIXER_CONTROL
+  #YM_REG_VOLUME_A
+  #YM_REG_VOLUME_B
+  #YM_REG_VOLUME_C
+  #YM_REG_ENVELOPE_HIGH_PERIOD
+  #YM_REG_ENVELOPE_LOW_PERIOD
+  #YM_REG_ENVELOPE_SHAPE
+  #YM_REG_EXTENDED_DATA1
+  #YM_REG_EXTENDED_DATA2
+EndEnumeration
 
 ;*****************************************************************************
 ; Structure YM
@@ -47,6 +67,7 @@ IncludeFile "SoundServer.pbi"
 ;*****************************************************************************
 ; Initalize SNDH
 ;*****************************************************************************
+
 Procedure YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
   plugin = OpenLibrary(#PB_Any,#YM2149SSND_PLUGIN)
   If plugin
@@ -95,12 +116,13 @@ EndProcedure : SoundServer::p\Render=@YM_Render()
 ; Helpper Procedures
 ;*****************************************************************************
 
+
+
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 49
-; FirstLine = 24
+; CursorPosition = 25
 ; Folding = -
 ; EnableXP
 ; DPIAware

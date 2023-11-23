@@ -34,7 +34,7 @@ DeclareModule SoundServer
     *Render
   EndStructure  
   p.STRUCT_PLUGIN
-      
+  
   Declare Render_CallBack(pmusic,*pBuffer,size.i)
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
@@ -257,8 +257,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 81
-; FirstLine = 69
+; CursorPosition = 36
+; FirstLine = 6
 ; Folding = --
 ; EnableXP
 ; DPIAware
