@@ -102,10 +102,28 @@ EndProcedure
 ; Sound Server Procedures
 ;*****************************************************************************
   
-;
-; Render Procedure for Source Server
-;
-Procedure SNDH_Render(pmusic,*pBuffer,size.i)
+;/****** SNDH_Plugin.pbi/SNDH_Render *****************************************
+;* 
+;*   NAME	
+;* 	     SNDH_Render -- calls SNDH render
+;*
+;*   SYNOPSIS
+;*	     None  SNDH_Render(pMusic,*pBuffer,size.i)
+;*
+;*   FUNCTION
+;*       Calls SNDH.dll to render the tune to PCM for play back, this 
+;*       Procedure is called by SoundServer, it's done this way for many
+;*       reasons, mainly because each ??_Plugin.pbi / sound format or dll has
+;*       it's own way of of rendering, so it's in the plugin just in case
+;*       we need to do other things, not just the over simplification here.
+;*
+;*   INPUTS
+;* 	     pMusic - 
+;*       *pBuffer -
+;*       int size -
+;* 
+;*****************************************************************************
+Procedure SNDH_Render(pMusic,*pBuffer,size.i)
   Protected nbSample
   If (pMusic)
     SNDH_AudioRender(*pBuffer,size)
@@ -134,9 +152,18 @@ EndProcedure
 Procedure SNDH_Pause()
 EndProcedure
 
-;
-; SNDH Initialize SoundServer
-;
+;/****** SNDH_Plugin.pbi/SNDH_Initialize_SoundServer *************************
+;* 
+;*   NAME	
+;* 	     SNDH_Initialize_SoundServer -- sets up Soundserver
+;*
+;*   FUNCTION
+;*       Initializes the SoundServer with the appropriate procedures to call
+;*       for playing tunes in SNDH format, we keep these here because other
+;*       ??_Plugin.pbi included would overwrite each other if all included at
+;*       the same time, hence this should be step 1 in your code. 
+;*
+;*****************************************************************************
 Procedure SNDH_Initialize_SoundServer()
   SoundServer::p\Render=@SNDH_Render()
   SoundServer::p\Play=@SNDH_Play()
@@ -148,22 +175,37 @@ EndProcedure
 ; Helpper Procedures
 ;*****************************************************************************
 
-; Load Song
-; Arguments = FileName
-; Results = 0 = Failure, 1 = Success
-
-; nb: in theory sndh_mem should be stored in STRUCT_AUDIOSERVER
-; however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
-; this shouldn't matter anyway as once SNDH_Load() has been given the
-; memory containing the sndh file data, sndh_mem becomes orphaned by vertue
-; of SNDH_Load() internally decompressing the sndh file from ICE and thus
-; it is now working from the decompressed data not the memory we gave it.
-
-; All of that said; it's quite possible to have an uncompressed sndh file
-; though rare! so it should not be assumed that we can actually free it,
-; now if we was talking about flac/mp3 or other formats I'd be really 
-; concerned about over memory usage, even still it does now free the memory.
-
+;/****** SNDH_Plugin.pbi/SNDH_LoadMusic **************************************
+;* 
+;*   NAME	
+;* 	     SNDH_LoadMusic -- 
+;*
+;*   SYNOPSIS
+;*	     long  = SNDH_LoadMusic(file.s)
+;*
+;*   FUNCTION
+;*       Loads a tune into the DLL for play back.
+;*
+;*   INPUTS
+;* 	     string file - file path to a sndh tune.
+;*	
+;*   RESULT
+;* 	     long handle - the result of calling SNDH_Load()
+;* 
+;*   NOTES
+;*       In theory sndh_mem should be stored in STRUCT_AUDIOSERVER
+;*       however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
+;*       this shouldn't matter anyway as once SNDH_Load() has been given the
+;*       memory containing the sndh file data, sndh_mem becomes orphaned by vertue
+;*       of SNDH_Load() internally decompressing the sndh file from ICE and thus
+;*       it is now working from the decompressed data not the memory we gave it.
+;* 
+;*       All of that said; it's quite possible to have an uncompressed sndh file
+;*       though rare! so it should not be assumed that we can actually free it,
+;*       now if we was talking about flac/mp3 or other formats I'd be really 
+;*       concerned about over memory usage, even still it does now free the memory.
+;* 
+;*****************************************************************************
 Procedure.l SNDH_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
   If fn
@@ -212,8 +254,8 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 212
-; FirstLine = 170
+; CursorPosition = 208
+; FirstLine = 180
 ; Folding = --
 ; EnableXP
 ; DPIAware
