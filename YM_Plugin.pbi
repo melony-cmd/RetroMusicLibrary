@@ -2,9 +2,13 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
+#YM_DEBUG_PLUGIN = #True
 
 #YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
 
+;*****************************************************************************
+; Enumeration YM
+;*****************************************************************************
 Enumeration
   #YM_REG_PERIOD_VOICE_A
   #YM_REG_FINE_PERIOD_VOICE_A
@@ -157,11 +161,9 @@ EndProcedure
 ;*       int size -
 ;* 
 ;*****************************************************************************
-Procedure RML_YM_Render(pmusic,*pBuffer,size.i)
-  Protected nbSample   
+Procedure RML_YM_Render(pMusic,*pBuffer,size.i)  
   If (pMusic)
-    nbSample = size >> 1;    
-    YM_ComputePCM(pMusic,*pBuffer,nbSample); 
+    YM_ComputePCM(SoundServer::p\Init,*pBuffer,size);
   EndIf 
 EndProcedure
 
@@ -199,25 +201,73 @@ EndProcedure
 ;*       the same time, hence this should be step 1 in your code. 
 ;*
 ;*****************************************************************************
-Procedure YM_Initialize_SoundServer()
+Procedure RML_YM_Initialize_SoundServer()
   SoundServer::p\Render=@RML_YM_Render()
   SoundServer::p\Play=@RML_YM_Play()
   SoundServer::p\Stop=@RML_YM_Stop()
   SoundServer::p\Pause=@RML_YM_Pause()
+  SoundServer::p\Init = YM_Init()
 EndProcedure
 
 ;*****************************************************************************
 ; Helpper Procedures
 ;*****************************************************************************
 
+;/****** SNDH_Plugin.pbi/RML_YM_LoadMusic ************************************
+;* 
+;*   NAME	
+;* 	     RML_YM_LoadMusic -- 
+;*
+;*   SYNOPSIS
+;*	     long  = RML_YM_LoadMusic(file.s)
+;*
+;*   FUNCTION
+;*       Loads a tune into the DLL for play back.
+;*
+;*   INPUTS
+;* 	     string file - file path to a sndh tune.
+;*	
+;*   RESULT
+;* 	     long handle - the result of calling YM_Load()
+;* 
+;*   NOTES
+;*       In theory sndh_mem should be stored in STRUCT_AUDIOSERVER
+;*       however STRUCT_AUDIOSERVER is inaccessable as its private to SoundServer
+;*       this shouldn't matter anyway as once SNDH_Load() has been given the
+;*       memory containing the sndh file data, sndh_mem becomes orphaned by vertue
+;*       of SNDH_Load() internally decompressing the sndh file from ICE and thus
+;*       it is now working from the decompressed data not the memory we gave it.
+;* 
+;*       All of that said; it's quite possible to have an uncompressed sndh file
+;*       though rare! so it should not be assumed that we can actually free it,
+;*       now if we was talking about flac/mp3 or other formats I'd be really 
+;*       concerned about over memory usage, even still it does now free the memory.
+;* 
+;*****************************************************************************
+Procedure.l RML_YM_LoadMusic(file.s) 
+  ProcedureReturn YM_LoadFile(SoundServer::p\Init,file)
+EndProcedure
 
 
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
+CompilerIf #YM_DEBUG_PLUGIN = #True
+  RML_YM_OpenLibrary()
+  RML_YM_Initialize_SoundServer()
+  
+  If RML_YM_LoadMusic("Decade3DDots.ym")   
+    SoundServer::Play()
+    YM_Play(SoundServer::p\Init)
+  EndIf
+    
+  Delay(25000)    
+  
+  RML_YM_Close()
+CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 88
-; FirstLine = 63
+; CursorPosition = 166
+; FirstLine = 142
 ; Folding = --
 ; EnableXP
 ; DPIAware

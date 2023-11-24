@@ -124,7 +124,6 @@ EndProcedure
 ;* 
 ;*****************************************************************************
 Procedure RML_SNDH_Render(pMusic,*pBuffer,size.i)
-  Protected nbSample
   If (pMusic)
     SNDH_AudioRender(*pBuffer,size)
   EndIf 
@@ -254,8 +253,8 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 183
-; FirstLine = 192
+; CursorPosition = 126
+; FirstLine = 111
 ; Folding = --
 ; EnableXP
 ; DPIAware

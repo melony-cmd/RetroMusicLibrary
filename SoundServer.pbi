@@ -25,6 +25,8 @@ DeclareModule SoundServer
   ; _Plugin - Procedure Addresses
   ;
   Structure STRUCT_PLUGIN
+    ; Initilization
+    init.l
     ; Current Plugin (.dll pointer)
     library.l
     ; Procedure Addresses
@@ -47,7 +49,7 @@ EndDeclareModule
 ;*****************************************************************************
 Module SoundServer
   
-  #DEBUG_SOUNDSERVER = #False
+  #DEBUG_SOUNDSERVER = #True
   
   Prototype pUSERCALLBACK(pmusic,*pBuffer,bufferlen.l)
   
@@ -157,6 +159,7 @@ Module SoundServer
         Debug "s_audioserver\m_currentBuffer="+Str(s_audioserver\m_currentBuffer)
         Debug "s_audioserver\m_pSoundBuffer="+Str(s_audioserver\m_pSoundBuffer)
       CompilerEndIf
+      
       s_audioserver\m_pUserCallback(@Render_CallBack(),
                                     s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer],
                                     s_audioserver\m_bufferSize)
@@ -219,12 +222,10 @@ Module SoundServer
   ;
   Procedure Play()    
     If SoundServer::Open(@Render_CallBack(),500)
-      
       ;I don't understand the point of this thread?
       ;A. The callbacks function irrespective the thread existing or not.
       ;B. the thread other than looping doesn't do anything within the loop to either
-      ;   fill the buffer or pretty much anything other than delay see point (a)
-           
+      ;   fill the buffer or pretty much anything other than delay see point (a)           
     EndIf    
   EndProcedure
     
@@ -257,8 +258,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 36
-; FirstLine = 6
+; CursorPosition = 161
+; FirstLine = 142
 ; Folding = --
 ; EnableXP
 ; DPIAware
