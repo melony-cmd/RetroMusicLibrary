@@ -27,7 +27,6 @@ EndEnumeration
 ;*****************************************************************************
 ; Structure YM
 ;*****************************************************************************
-
 Structure ymMusicInfo
   *pSongName
   *pSongAuthor
@@ -41,7 +40,6 @@ EndStructure
 ;*****************************************************************************
 ; Prototypes YM
 ;*****************************************************************************
-
 PrototypeC   YM_Destroy(*pMusic)                        : Global YM_Destroy.YM_Destroy
 PrototypeC   YM_Init()                                  : Global YM_Init.YM_Init
 PrototypeC.b YM_LoadFile(*pMusic,file.p-Ascii)          : Global YM_LoadFile.YM_LoadFile
@@ -65,10 +63,30 @@ PrototypeC   YM_MusicSeek(*pMusic,timeInMs.l)           : Global YM_MusicSeek.YM
 IncludeFile "SoundServer.pbi"
 
 ;*****************************************************************************
-; Initalize SNDH
+; Initalize YM
 ;*****************************************************************************
 
-Procedure YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
+;/****** SNDH_Plugin.pbi/YM_OpenLibrary **************************************
+;* 
+;*   NAME	
+;* 	     YM_OpenLibrary -- Opens SNDH dll.
+;*
+;*   SYNOPSIS
+;*	     long library = YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
+;*
+;*   FUNCTION
+;*       Prototype the DLL functions.
+;*
+;*   INPUTS
+;* 	     string library - can be ignored if the dll is in the location
+;*       held in #YM2149SSND_PLUGIN, else you can pass your own path.
+;*	
+;*   RESULT
+;*       library pointer - value passed back from OpenLibrary()
+;* 	     error - #False
+;* 
+;*****************************************************************************
+Procedure RML_YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
   plugin = OpenLibrary(#PB_Any,#YM2149SSND_PLUGIN)
   If plugin
     YM_Init = GetFunction(plugin, "YM_Init")
@@ -89,28 +107,104 @@ Procedure YM_OpenLibrary(library.s=#YM2149SSND_PLUGIN)
     YM_Restart = GetFunction(plugin, "YM_Restart")
     YM_IsSeekable = GetFunction(plugin, "YM_IsSeekable")
     YM_GetPosition = GetFunction(plugin, "YM_GetPosition")
-    YM_MusicSeek = GetFunction(plugin, "YM_MusicSeek")  
+    YM_MusicSeek = GetFunction(plugin, "YM_MusicSeek")
+    
+    SoundServer::p\library = dll_plugin
   Else 
-    MessageRequester("error","Can't open YM2149SSND.dll") 
+    ProcedureReturn #False 
   EndIf
+  ProcedureReturn dll_plugin
+EndProcedure
+
+;/****** SNDH_Plugin.pbi/SNDH_Close ******************************************
+;* 
+;*   NAME	
+;* 	     YM_Close -- Shut down YM dll
+;*
+;*   FUNCTION
+;*       Closes the server library currently open. While it might seem still
+;*       ridiculous to wrapper such a function as CloseLibrary() in this way
+;*       it's future proofing, in the event that futre additions might require
+;*       more deinitializing than just simply closing the library.
+;* 
+;*****************************************************************************
+Procedure RML_YM_Close()
+  CloseLibrary(SoundServer::p\library)
 EndProcedure
 
 ;*****************************************************************************
 ; Sound Server Procedures
 ;*****************************************************************************
 
-;
-; Render Procedure for Source Server
-;
-; * We can call this name anything we like, however obviously we're likely to prefix it with the format in which it is rendering.
-; 
-Procedure YM_Render(pmusic,*pBuffer,size.i)
+;/****** SNDH_Plugin.pbi/YM_Render *******************************************
+;* 
+;*   NAME	
+;* 	     YM_Render -- calls SNDH render
+;*
+;*   SYNOPSIS
+;*	     None  YM_Render(pMusic,*pBuffer,size.i)
+;*
+;*   FUNCTION
+;*       Calls YM2149SSND.dll to render the tune to PCM for play back, this 
+;*       Procedure is called by SoundServer, it's done this way for many
+;*       reasons, mainly because each ??_Plugin.pbi / sound format or dll has
+;*       it's own way of of rendering, so it's in the plugin just in case
+;*       we need to do other things, not just the over simplification here.
+;*
+;*   INPUTS
+;* 	     pMusic - 
+;*       *pBuffer -
+;*       int size -
+;* 
+;*****************************************************************************
+Procedure RML_YM_Render(pmusic,*pBuffer,size.i)
   Protected nbSample   
   If (pMusic)
     nbSample = size >> 1;    
     YM_ComputePCM(pMusic,*pBuffer,nbSample); 
   EndIf 
-EndProcedure : SoundServer::p\Render=@YM_Render()
+EndProcedure
+
+;
+; Play Thread 
+;
+Procedure RML_YM_Play(*sound)
+  Debug "--- Play Thread ---"
+  Repeat  
+    Delay(1) 
+  ForEver
+EndProcedure 
+
+;
+; Stop
+;
+Procedure RML_YM_Stop()
+EndProcedure 
+
+;
+; Pause
+;
+Procedure RML_YM_Pause()
+EndProcedure
+
+;/****** YM_Plugin.pbi/YM_Initialize_SoundServer *****************************
+;* 
+;*   NAME	
+;* 	     YM_Initialize_SoundServer -- sets up Soundserver
+;*
+;*   FUNCTION
+;*       Initializes the SoundServer with the appropriate procedures to call
+;*       for playing tunes in YM format, we keep these here because other
+;*       ??_Plugin.pbi included would overwrite each other if all included at
+;*       the same time, hence this should be step 1 in your code. 
+;*
+;*****************************************************************************
+Procedure YM_Initialize_SoundServer()
+  SoundServer::p\Render=@RML_YM_Render()
+  SoundServer::p\Play=@RML_YM_Play()
+  SoundServer::p\Stop=@RML_YM_Stop()
+  SoundServer::p\Pause=@RML_YM_Pause()
+EndProcedure
 
 ;*****************************************************************************
 ; Helpper Procedures
@@ -122,7 +216,8 @@ EndProcedure : SoundServer::p\Render=@YM_Render()
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 25
-; Folding = -
+; CursorPosition = 88
+; FirstLine = 63
+; Folding = --
 ; EnableXP
 ; DPIAware

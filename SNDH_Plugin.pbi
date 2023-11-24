@@ -42,13 +42,13 @@ IncludeFile "SoundServer.pbi"
 ; Initalize SNDH
 ;*****************************************************************************
 
-;/****** SNDH_Plugin.pbi/SNDH_OpenLibrary ************************************
+;/****** SNDH_Plugin.pbi/RML_SNDH_OpenLibrary ********************************
 ;* 
 ;*   NAME	
-;* 	     SNDH_OpenLibrary -- Opens SNDH dll.
+;* 	     RML_SNDH_OpenLibrary -- Opens SNDH dll.
 ;*
 ;*   SYNOPSIS
-;*	     long library = SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)
+;*	     long library = RML_SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)
 ;*
 ;*   FUNCTION
 ;*       Prototype the DLL functions.
@@ -62,7 +62,7 @@ IncludeFile "SoundServer.pbi"
 ;* 	     error - #False
 ;* 
 ;*****************************************************************************
-Procedure SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)  
+Procedure RML_SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)  
   dll_plugin = OpenLibrary(#PB_Any,library)
   If dll_plugin
     SNDH_Load = GetFunction(dll_plugin, "SNDH_Load")
@@ -82,10 +82,10 @@ Procedure SNDH_OpenLibrary(library.s=#SNDH_PLUGIN)
   ProcedureReturn dll_plugin
 EndProcedure
 
-;/****** SNDH_Plugin.pbi/SNDH_Close ******************************************
+;/****** SNDH_Plugin.pbi/RML_SNDH_Close **************************************
 ;* 
 ;*   NAME	
-;* 	     SNDH_Close -- Shut down SNDH dll
+;* 	     RML_SNDH_Close -- Shut down SNDH dll
 ;*
 ;*   FUNCTION
 ;*       Closes the server library currently open. While it might seem still
@@ -94,7 +94,7 @@ EndProcedure
 ;*       more deinitializing than just simply closing the library.
 ;* 
 ;*****************************************************************************
-Procedure SNDH_Close()
+Procedure RML_SNDH_Close()
   CloseLibrary(SoundServer::p\library)
 EndProcedure
 
@@ -102,13 +102,13 @@ EndProcedure
 ; Sound Server Procedures
 ;*****************************************************************************
   
-;/****** SNDH_Plugin.pbi/SNDH_Render *****************************************
+;/****** SNDH_Plugin.pbi/RML_SNDH_Render *************************************
 ;* 
 ;*   NAME	
-;* 	     SNDH_Render -- calls SNDH render
+;* 	     RML_SNDH_Render -- calls SNDH render
 ;*
 ;*   SYNOPSIS
-;*	     None  SNDH_Render(pMusic,*pBuffer,size.i)
+;*	     None  RML_SNDH_Render(pMusic,*pBuffer,size.i)
 ;*
 ;*   FUNCTION
 ;*       Calls SNDH.dll to render the tune to PCM for play back, this 
@@ -123,7 +123,7 @@ EndProcedure
 ;*       int size -
 ;* 
 ;*****************************************************************************
-Procedure SNDH_Render(pMusic,*pBuffer,size.i)
+Procedure RML_SNDH_Render(pMusic,*pBuffer,size.i)
   Protected nbSample
   If (pMusic)
     SNDH_AudioRender(*pBuffer,size)
@@ -133,7 +133,7 @@ EndProcedure
 ;
 ; Play Thread 
 ;
-Procedure SNDH_Play(*sound)
+Procedure RML_SNDH_Play(*sound)
   Debug "--- Play Thread ---"
   Repeat  
     Delay(1) 
@@ -143,19 +143,19 @@ EndProcedure
 ;
 ; Stop
 ;
-Procedure SNDH_Stop()
+Procedure RML_SNDH_Stop()
 EndProcedure 
 
 ;
 ; Pause
 ;
-Procedure SNDH_Pause()
+Procedure RML_SNDH_Pause()
 EndProcedure
 
-;/****** SNDH_Plugin.pbi/SNDH_Initialize_SoundServer *************************
+;/****** SNDH_Plugin.pbi/RML_SNDH_Initialize_SoundServer *********************
 ;* 
 ;*   NAME	
-;* 	     SNDH_Initialize_SoundServer -- sets up Soundserver
+;* 	     RML_SNDH_Initialize_SoundServer -- sets up Soundserver
 ;*
 ;*   FUNCTION
 ;*       Initializes the SoundServer with the appropriate procedures to call
@@ -164,24 +164,24 @@ EndProcedure
 ;*       the same time, hence this should be step 1 in your code. 
 ;*
 ;*****************************************************************************
-Procedure SNDH_Initialize_SoundServer()
-  SoundServer::p\Render=@SNDH_Render()
-  SoundServer::p\Play=@SNDH_Play()
-  SoundServer::p\Stop=@SNDH_Stop()
-  SoundServer::p\Pause=@SNDH_Pause()
+Procedure RML_SNDH_Initialize_SoundServer()
+  SoundServer::p\Render=@RML_SNDH_Render()
+  SoundServer::p\Play=@RML_SNDH_Play()
+  SoundServer::p\Stop=@RML_SNDH_Stop()
+  SoundServer::p\Pause=@RML_SNDH_Pause()
 EndProcedure
 
 ;*****************************************************************************
 ; Helpper Procedures
 ;*****************************************************************************
 
-;/****** SNDH_Plugin.pbi/SNDH_LoadMusic **************************************
+;/****** SNDH_Plugin.pbi/RML_SNDH_LoadMusic **********************************
 ;* 
 ;*   NAME	
-;* 	     SNDH_LoadMusic -- 
+;* 	     RML_SNDH_LoadMusic -- 
 ;*
 ;*   SYNOPSIS
-;*	     long  = SNDH_LoadMusic(file.s)
+;*	     long  = RML_SNDH_LoadMusic(file.s)
 ;*
 ;*   FUNCTION
 ;*       Loads a tune into the DLL for play back.
@@ -206,7 +206,7 @@ EndProcedure
 ;*       concerned about over memory usage, even still it does now free the memory.
 ;* 
 ;*****************************************************************************
-Procedure.l SNDH_LoadMusic(file.s) 
+Procedure.l RML_SNDH_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
   If fn
     filesize = FileSize(file) 
@@ -227,12 +227,12 @@ EndProcedure
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
 CompilerIf #SNDH_DEBUG_PLUGIN = #True
-  SNDH_Initialize_SoundServer()
-  SNDH_OpenLibrary()
+  RML_SNDH_Initialize_SoundServer()
+  RML_SNDH_OpenLibrary()
   
   info.SubSongInfo
   
-  If SNDH_LoadMusic("decade_demo-loader.sndh")=1
+  If RML_SNDH_LoadMusic("decade_demo-loader.sndh")=1
     SNDH_InitSubSong(1)
     SNDH_GetSubSongInfo(1,@info)   
     Debug "info\musicName = "+PeekS(info\musicName,-1,#PB_Ascii)
@@ -251,11 +251,11 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
     
     Delay(25000)    
   EndIf  
-  SNDH_Close()
+  RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 208
-; FirstLine = 180
+; CursorPosition = 183
+; FirstLine = 192
 ; Folding = --
 ; EnableXP
 ; DPIAware
