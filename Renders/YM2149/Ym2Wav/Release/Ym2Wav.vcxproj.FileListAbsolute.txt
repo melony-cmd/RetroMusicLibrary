@@ -1,0 +1,2 @@
+C:\Users\Tim\Desktop\StSoundPackage\Ym2Wav\Release\Ym2Wav.exe
+D:\Work\Code\SDK\StSoundPackage\Ym2Wav\Release\Ym2Wav.exe

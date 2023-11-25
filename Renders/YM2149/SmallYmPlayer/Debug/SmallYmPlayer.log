@@ -1,0 +1,7 @@
+﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  SoundServer.cpp
+  SmallYmPlayer.cpp
+  Generating Code...
+SmallYmPlayer.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+     Creating library .\Debug\SmallYmPlayer.lib and object .\Debug\SmallYmPlayer.exp
+  SmallYmPlayer.vcxproj -> C:\Users\Tim\Desktop\StSoundPackage\SmallYmPlayer\Debug\SmallYmPlayer.exe

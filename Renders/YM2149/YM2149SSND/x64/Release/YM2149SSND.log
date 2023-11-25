@@ -1,0 +1,19 @@
+﻿     Creating library D:\Work\Code\SDK\StSoundPackage\x64\Release\YM2149SSND.lib and object D:\Work\Code\SDK\StSoundPackage\x64\Release\YM2149SSND.exp
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicCreate
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicDestroy
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicLoad
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicLoadMemory
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicPlay
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicCompute
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicGetInfo
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicSetLowpassFiler
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicSetLoopMode
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicGetLastError
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicGetRegister
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicPause
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicStop
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicIsOver
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicRestart
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicIsSeekable
+YM2149Lib.obj : error LNK2001: unresolved external symbol ymMusicSeek
+D:\Work\Code\SDK\StSoundPackage\x64\Release\YM2149SSND.dll : fatal error LNK1120: 17 unresolved externals

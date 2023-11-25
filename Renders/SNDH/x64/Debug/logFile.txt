@@ -1,0 +1,38 @@
+Load()
+
+ICE: ice_24_header((unsigned char*)rawSndhFile)
+
+AudioRender()
+
+Buffer = 89915520
+Count = 1
+pSampleViewInfo = 0
+for loop i = 0
+m_innerSamplePos = -1
+if m_innerSamplePos = -1
+!!!ATARI STARTUP!!!
+Load()
+
+ICE: ice_24_header((unsigned char*)rawSndhFile)
+
+AudioRender()
+
+Buffer = 80543872
+Count = 1
+pSampleViewInfo = 0
+for loop i = 0
+m_innerSamplePos = -1
+if m_innerSamplePos = -1
+Load()
+
+ICE: ice_24_header((unsigned char*)rawSndhFile)
+
+!!!ATARI STARTUP!!!
+AudioRender()
+
+Buffer = 80543872
+Count = 1
+pSampleViewInfo = 0
+for loop i = 0
+m_innerSamplePos = -1
+if m_innerSamplePos = -1

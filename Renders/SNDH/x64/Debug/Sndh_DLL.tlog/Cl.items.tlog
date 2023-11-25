@@ -1,0 +1,10 @@
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\AtariMachine.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\AtariMachine.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\external\ice_24.c;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\ice_24.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\external\Musashi\m68kcpu.c;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\m68kcpu.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\external\Musashi\m68kops.c;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\m68kops.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\Mk68901.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\Mk68901.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\SndhFile.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\SndhFile.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\SteDac.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\SteDac.obj
+D:\Work\Code\SDK\Sndh_DLL\AtariAudio\ym2149c.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\ym2149c.obj
+D:\Work\Code\SDK\Sndh_DLL\dllmain.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\dllmain.obj
+D:\Work\Code\SDK\Sndh_DLL\pch.cpp;D:\Work\Code\SDK\Sndh_DLL\x64\Debug\pch.obj

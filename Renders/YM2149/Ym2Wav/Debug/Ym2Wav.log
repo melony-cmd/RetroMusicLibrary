@@ -1,0 +1,5 @@
+﻿cl : command line  warning D9035: option 'Gm' has been deprecated and will be removed in a future release
+  Ym2Wav.cpp
+C:\Users\Tim\Desktop\StSoundPackage\Ym2Wav\Ym2Wav.cpp(104,15): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+Ym2Wav.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  Ym2Wav.vcxproj -> C:\Users\Tim\Desktop\StSoundPackage\Ym2Wav\Debug\Ym2Wav.exe
