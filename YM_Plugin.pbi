@@ -260,7 +260,7 @@ CompilerIf #YM_DEBUG_PLUGIN = #True
   RML_YM_OpenLibrary()
   RML_YM_Initialize_SoundServer()
   
-  If RML_YM_LoadMusic("Decade3DDots.ym")   
+  If RML_YM_LoadMusic("Music/Decade3DDots.ym")   
     SoundServer::Play()
     YM_Play(SoundServer::p\Init)
   EndIf
@@ -270,7 +270,8 @@ CompilerIf #YM_DEBUG_PLUGIN = #True
   RML_YM_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 5
+; CursorPosition = 262
+; FirstLine = 228
 ; Folding = --
 ; EnableXP
 ; DPIAware

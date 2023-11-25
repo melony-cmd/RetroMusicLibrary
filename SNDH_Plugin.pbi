@@ -249,7 +249,7 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   
   info.SubSongInfo
   
-  If RML_SNDH_LoadMusic("decade_demo-loader.sndh")=1
+  If RML_SNDH_LoadMusic("Music/decade_demo-loader.sndh")=1
     SNDH_InitSubSong(1)
     SNDH_GetSubSongInfo(1,@info)   
     Debug "info\musicName = "+PeekS(info\musicName,-1,#PB_Ascii)
@@ -276,8 +276,8 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 254
-; FirstLine = 230
+; CursorPosition = 251
+; FirstLine = 234
 ; Folding = --
 ; EnableXP
 ; DPIAware
