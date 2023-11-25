@@ -2,7 +2,7 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
-#YM_DEBUG_PLUGIN = #True
+#YM_DEBUG_PLUGIN = #False
 
 #YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
 
@@ -64,7 +64,7 @@ PrototypeC.b YM_IsSeekable(*pMusic)                     : Global YM_IsSeekable.Y
 PrototypeC.l YM_GetPosition(*pMusic)                    : Global YM_GetPosition.YM_GetPosition
 PrototypeC   YM_MusicSeek(*pMusic,timeInMs.l)           : Global YM_MusicSeek.YM_MusicSeek
 
-IncludeFile "SoundServer.pbi"
+XIncludeFile "SoundServer.pbi"
 
 ;*****************************************************************************
 ; Initalize YM
@@ -266,8 +266,7 @@ CompilerIf #YM_DEBUG_PLUGIN = #True
   RML_YM_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 166
-; FirstLine = 142
+; CursorPosition = 5
 ; Folding = --
 ; EnableXP
 ; DPIAware

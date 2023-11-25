@@ -49,7 +49,7 @@ EndDeclareModule
 ;*****************************************************************************
 Module SoundServer
   
-  #DEBUG_SOUNDSERVER = #True
+  #DEBUG_SOUNDSERVER = #False
   
   Prototype pUSERCALLBACK(pmusic,*pBuffer,bufferlen.l)
   
@@ -258,8 +258,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 161
-; FirstLine = 142
+; CursorPosition = 53
+; FirstLine = 21
 ; Folding = --
 ; EnableXP
 ; DPIAware

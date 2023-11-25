@@ -3,7 +3,7 @@
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
 
-#SNDH_DEBUG_PLUGIN = #True
+#SNDH_DEBUG_PLUGIN = #False
 
 #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
 
@@ -36,7 +36,7 @@ PrototypeC.b SNDH_GetSubSongInfo(subSongId.i,*pinfo)                 : Global SN
 PrototypeC   SNDH_GetRawData()                                       : Global SNDH_GetRawData.SNDH_GetRawData
 PrototypeC.i SNDH_GetRawDataSize()                                   : Global SNDH_GetRawDataSize.SNDH_GetRawDataSize
 
-IncludeFile "SoundServer.pbi"
+XIncludeFile "SoundServer.pbi"
 
 ;*****************************************************************************
 ; Initalize SNDH
@@ -253,8 +253,7 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 126
-; FirstLine = 111
+; CursorPosition = 7
 ; Folding = --
 ; EnableXP
 ; DPIAware
