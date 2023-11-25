@@ -101,7 +101,19 @@ EndProcedure
 ;*****************************************************************************
 ; Sound Server Procedures
 ;*****************************************************************************
-  
+
+;    NOTES:
+;        The reason we do this is because there SoundServer would get bloated
+;        if it had to handle all the variations of how each and every plugin
+;        likes to operate thus SoundServer calls into the plugin to tell it 
+;        how to play, stop, pause, etc. sometimes these procedure may even
+;        call back into the SoundServer, beause certain features may not exist
+;        in whichever render dll plugin is being used.
+;
+;        SNDH for example has no stop/pause features so this has to be handled
+;        by the server so these commands will call server functions to perform
+;        the desired action.
+
 ;/****** SNDH_Plugin.pbi/RML_SNDH_Render *************************************
 ;* 
 ;*   NAME	
@@ -259,8 +271,8 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 134
-; FirstLine = 117
+; CursorPosition = 105
+; FirstLine = 99
 ; Folding = --
 ; EnableXP
 ; DPIAware
