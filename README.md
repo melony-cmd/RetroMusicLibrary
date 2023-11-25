@@ -11,7 +11,7 @@ No, remember I said I'd controdic myself? yes but not in this project githib pag
 [releasing]
 
 # Currently Supports
-YM https://github.com/arnaud-carre/StSound
+YM https://github.com/arnaud-carre/StSound <br>
 SNDH https://github.com/arnaud-carre/sndh-player
 
 # Next Target
