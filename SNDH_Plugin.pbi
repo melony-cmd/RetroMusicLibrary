@@ -5,7 +5,11 @@
 
 #SNDH_DEBUG_PLUGIN = #True
 
-#SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
+CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
+  #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
+CompilerElseIf #PB_Compiler_Processor = #PB_Processor_x64
+  #SNDH_PLUGIN = "x64_Plugins/SNDH.dll"
+CompilerEndIf
 
 ;*****************************************************************************
 ; Structure SNDH
@@ -266,13 +270,14 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
     
     SoundServer::Pause()
     SoundServer::Stop()
-    
+  Else
+    Debug "Unable to open music file"
   EndIf  
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 105
-; FirstLine = 99
+; CursorPosition = 254
+; FirstLine = 230
 ; Folding = --
 ; EnableXP
 ; DPIAware

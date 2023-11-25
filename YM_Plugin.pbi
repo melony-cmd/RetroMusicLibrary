@@ -2,9 +2,13 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
-#YM_DEBUG_PLUGIN = #False
+#YM_DEBUG_PLUGIN = #True
 
-#YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
+CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
+  #YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
+CompilerElseIf #PB_Compiler_Processor = #PB_Processor_x64
+  #YM2149SSND_PLUGIN = "x64_Plugins/"
+CompilerEndIf
 
 ;*****************************************************************************
 ; Enumeration YM
