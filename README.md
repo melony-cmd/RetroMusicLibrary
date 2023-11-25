@@ -8,10 +8,11 @@ let me be very clear and also controdic myself, RML is not and will not -ever- b
 No, remember I said I'd controdic myself? yes but not in this project githib page, when or if I make one for DEBUGGING PURPOSES ONLY that will be it's own thing separate from this one.
 
 # Status
-SNDH - plays but hiccups.
+[releasing]
 
-# Current music types being worked on
-YM, SNDH
+# Currently Supports
+YM https://github.com/arnaud-carre/StSound <br>
+SNDH https://github.com/arnaud-carre/sndh-player
 
 # Next Target
 SID, UADE, Quartet
