@@ -40,7 +40,9 @@ DeclareModule SoundServer
   Declare Render_CallBack(pmusic,*pBuffer,size.i)
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
+  Declare Stop()
   Declare Play()
+  Declare Pause()
   
 EndDeclareModule 
 
@@ -228,7 +230,21 @@ Module SoundServer
       ;   fill the buffer or pretty much anything other than delay see point (a)           
     EndIf    
   EndProcedure
-    
+  
+  ;
+  ;
+  ;
+  Procedure Stop()
+    CallFunctionFast(SoundServer::p\Stop,pMusic)
+  EndProcedure
+  
+  ;
+  ;
+  ;
+  Procedure Pause()
+    CallFunctionFast(SoundServer::p\Pause,pMusic)
+  EndProcedure
+  
 EndModule 
 
 ; CompilerIf #PB_Compiler_IsMainFile  
@@ -258,8 +274,8 @@ EndModule
 ;   
 ; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 53
-; FirstLine = 21
-; Folding = --
+; CursorPosition = 244
+; FirstLine = 220
+; Folding = ---
 ; EnableXP
 ; DPIAware

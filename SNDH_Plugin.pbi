@@ -3,7 +3,7 @@
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
 
-#SNDH_DEBUG_PLUGIN = #False
+#SNDH_DEBUG_PLUGIN = #True
 
 #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
 
@@ -132,7 +132,7 @@ EndProcedure
 ;
 ; Play Thread 
 ;
-Procedure RML_SNDH_Play(*sound)
+Procedure RML_SNDH_Play(pMusic)
   Debug "--- Play Thread ---"
   Repeat  
     Delay(1) 
@@ -142,13 +142,15 @@ EndProcedure
 ;
 ; Stop
 ;
-Procedure RML_SNDH_Stop()
+Procedure RML_SNDH_Stop(pMusic)
+  Debug "--- Stop ---"
 EndProcedure 
 
 ;
 ; Pause
 ;
-Procedure RML_SNDH_Pause()
+Procedure RML_SNDH_Pause(pMusic)
+  Debug "--- Pause ---"
 EndProcedure
 
 ;/****** SNDH_Plugin.pbi/RML_SNDH_Initialize_SoundServer *********************
@@ -248,12 +250,17 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
     
     SoundServer::Play()
     
-    Delay(25000)    
+    Delay(5000)
+    
+    SoundServer::Pause()
+    SoundServer::Stop()
+    
   EndIf  
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 7
+; CursorPosition = 134
+; FirstLine = 117
 ; Folding = --
 ; EnableXP
 ; DPIAware
