@@ -3,7 +3,7 @@
 ;Requires "SNDH.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
 
-#SNDH_DEBUG_PLUGIN = #True
+#SNDH_DEBUG_PLUGIN = #False
 
 CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
   #SNDH_PLUGIN = "x86_Plugins/SNDH.dll"
@@ -145,30 +145,6 @@ Procedure RML_SNDH_Render(pMusic,*pBuffer,size.i)
   EndIf 
 EndProcedure 
 
-;
-; Play Thread 
-;
-Procedure RML_SNDH_Play(pMusic)
-  Debug "--- Play Thread ---"
-  Repeat  
-    Delay(1) 
-  ForEver
-EndProcedure 
-
-;
-; Stop
-;
-Procedure RML_SNDH_Stop(pMusic)
-  Debug "--- Stop ---"
-EndProcedure 
-
-;
-; Pause
-;
-Procedure RML_SNDH_Pause(pMusic)
-  Debug "--- Pause ---"
-EndProcedure
-
 ;/****** SNDH_Plugin.pbi/RML_SNDH_Initialize_SoundServer *********************
 ;* 
 ;*   NAME	
@@ -183,9 +159,6 @@ EndProcedure
 ;*****************************************************************************
 Procedure RML_SNDH_Initialize_SoundServer()
   SoundServer::p\Render=@RML_SNDH_Render()
-  SoundServer::p\Play=@RML_SNDH_Play()
-  SoundServer::p\Stop=@RML_SNDH_Stop()
-  SoundServer::p\Pause=@RML_SNDH_Pause()
 EndProcedure
 
 ;*****************************************************************************
@@ -263,21 +236,23 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
     Debug "info\playerTickRate = "+Str(info\playerTickRate)
     Debug "info\samplePerTick = "+Str(info\samplePerTick)
     Debug "info\subsongCount = "+Str(info\subsongCount)
-    
+
     SoundServer::Play()
     
-    Delay(5000)
+    Delay(1000)
     
-    SoundServer::Pause()
     SoundServer::Stop()
+    
+    Delay(2000)  
+        
   Else
     Debug "Unable to open music file"
   EndIf  
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 251
-; FirstLine = 234
+; CursorPosition = 161
+; FirstLine = 129
 ; Folding = --
 ; EnableXP
 ; DPIAware

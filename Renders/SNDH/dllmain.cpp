@@ -6,18 +6,7 @@
 
 SndhFile c_sndh;
 AtariMachine c_atarimachine;
-/*
-struct SubSongInfo
-{
-    int subsongCount;
-    int	playerTickCount;
-    int playerTickRate;
-    int samplePerTick;
-    const char* musicName;
-    const char* musicAuthor;
-    const char* year;
-};
-*/
+
 /*
  *  AtariMachine C __declspec(dllexport)
  */

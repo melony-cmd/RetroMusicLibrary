@@ -6,7 +6,7 @@
 ;*****************************************************************************
 ; Enumeration of File Format Types
 ;*****************************************************************************
-Enumeration
+Enumeration RML_TYPE
   #RML_YM2149SSND
   #RML_SNDH
 EndEnumeration
@@ -24,15 +24,19 @@ DeclareModule SoundServer
   ;
   ; _Plugin - Procedure Addresses
   ;
-  Structure STRUCT_PLUGIN
+  Structure STRUCT_PLUGIN    
     ; Initilization
     init.l
     ; Current Plugin (.dll pointer)
     library.l
     ; Procedure Addresses
-    *Stop
-    *Play
-    *Pause
+    ; :: REMOVED FOR NOW AS IT'S FAR FAR FAR TO CRASH HAPPY!
+    ; :: Don't get me wrong it's a really nice idea, it just doesn't work in practice.
+    ; :: as it bombs with Invalid Memory Access. (Read Error at Address ####)
+    ;*Stop
+    ;*Play
+    ;*Pause
+    ;*Resume
     *Render
   EndStructure  
   p.STRUCT_PLUGIN
@@ -41,6 +45,7 @@ DeclareModule SoundServer
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
   Declare Stop()
+  Declare Resume()
   Declare Play()
   Declare Pause()
   
@@ -59,6 +64,7 @@ Module SoundServer
     tid.i
     kill.i
     type.l
+    stop.b
     pause.l
     *sndh_mem
     m_pmusic.l
@@ -74,6 +80,19 @@ Module SoundServer
   
   Declare FillNextBuffer()
   
+  ;*****************************************************************************
+  ;-Server Debug Log
+  ;*****************************************************************************
+  Procedure DebugServer(message.s)
+    CompilerIf #DEBUG_SOUNDSERVER = #True
+      If OpenFile(0,"DebugServer.log")
+        FileSeek(0,Lof(0))
+        WriteStringN(0,message)
+        CloseFile(0)
+      EndIf      
+    CompilerEndIf
+  EndProcedure
+    
   ;*****************************************************************************
   ;-Server WaveOut
   ;*****************************************************************************
@@ -101,6 +120,8 @@ Module SoundServer
     s_audioserver\m_bufferSize = ((totalBufferedSoundLen * #REPLAY_RATE) / 1000) * #REPLAY_SAMPLELEN
     s_audioserver\m_bufferSize / #REPLAY_NBSOUNDBUFFER
     
+    DebugServer("totalBufferedSoundLen = "+Str(totalBufferedSoundLen))
+    
     Protected  wfx.WAVEFORMATEX	
     wfx\wFormatTag = 1
     wfx\nChannels = 1
@@ -109,12 +130,12 @@ Module SoundServer
     wfx\nBlockAlign = #REPLAY_SAMPLELEN
     wfx\wBitsPerSample = #REPLAY_DEPTH
     wfx\cbSize = 0
-    errCode = waveOutOpen_(@s_audioserver\m_hWaveOut,#WAVE_MAPPER,@wfx,@WaveOut_CallBack(),s_audioserver,#CALLBACK_FUNCTION)
     
+    errCode = waveOutOpen_(@s_audioserver\m_hWaveOut,#WAVE_MAPPER,@wfx,@WaveOut_CallBack(),s_audioserver,#CALLBACK_FUNCTION)
     If (errCode <> #MMSYSERR_NOERROR)
       ProcedureReturn #False
     EndIf 
-    
+        
     For i=0 To #REPLAY_NBSOUNDBUFFER-1
       s_audioserver\m_pSoundBuffer[i] = AllocateMemory(s_audioserver\m_bufferSize)
     Next 
@@ -174,14 +195,15 @@ Module SoundServer
     s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer]\lpData = s_audioserver\m_pSoundBuffer[s_audioserver\m_currentBuffer];
     s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer]\dwBufferLength = s_audioserver\m_bufferSize
     ;
-    waveOutPrepareHeader_(s_audioserver\m_hWaveOut,
-                          @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
-                          SizeOf(WAVEHDR));        
+    If s_audioserver\stop = #False
+      waveOutPrepareHeader_(s_audioserver\m_hWaveOut,
+                            @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
+                            SizeOf(WAVEHDR));        
     
-    waveOutWrite_(s_audioserver\m_hWaveOut,
-                  @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
-                  SizeOf(WAVEHDR));
-       
+      waveOutWrite_(s_audioserver\m_hWaveOut,
+                    @s_audioserver\m_waveHeader[s_audioserver\m_currentBuffer],
+                    SizeOf(WAVEHDR));      
+    EndIf
     s_audioserver\m_currentBuffer+1
     If s_audioserver\m_currentBuffer >= #REPLAY_NBSOUNDBUFFER
       s_audioserver\m_currentBuffer = 0;
@@ -202,32 +224,25 @@ Module SoundServer
         Debug "*pBuffer="+Str(*pBuffer)
         Debug "nbSample="+Str(nbSample)
       CompilerEndIf
-      CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)      
+      If s_audioserver\stop = #False
+        CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
+      EndIf      
     EndIf        
   EndProcedure 
   
   ;*****************************************************************************
   ;-Server Commands
   ;*****************************************************************************
-     
-  ;
-  ; 
-  ;
-  Procedure Thread_Play(*sound.STRUCT_AUDIOSERVER)       
-    If Not IsThread(*sound\tid)
-      *sound\tid = CreateThread(SoundServer::p\Play,*sound)  
-    EndIf        
-  EndProcedure
-  
+      
   ;
   ;
   ;
-  Procedure Play()    
+  Procedure Play()
+    ; Must ensure SoundServer is closed before play start.
+    SoundServer::Close()
+    
     If SoundServer::Open(@Render_CallBack(),500)
-      ;I don't understand the point of this thread?
-      ;A. The callbacks function irrespective the thread existing or not.
-      ;B. the thread other than looping doesn't do anything within the loop to either
-      ;   fill the buffer or pretty much anything other than delay see point (a)           
+      s_audioserver\stop = #False
     EndIf    
   EndProcedure
   
@@ -235,47 +250,28 @@ Module SoundServer
   ;
   ;
   Procedure Stop()
-    CallFunctionFast(SoundServer::p\Stop,pMusic)
+    s_audioserver\stop = #True
   EndProcedure
   
   ;
   ;
   ;
   Procedure Pause()
-    CallFunctionFast(SoundServer::p\Pause,pMusic)
+    s_audioserver\stop = #True
+  EndProcedure
+  
+  ;
+  ;
+  ;
+  Procedure Resume()
+    s_audioserver\stop = #False
+    FillNextBuffer()
   EndProcedure
   
 EndModule 
 
-; CompilerIf #PB_Compiler_IsMainFile  
-;   
-;   UseModule YMPLAYER  
-;   
-;   sound = YMLoad("Decade3DDots.ym") 
-;   sound1 = YMLoad("Union Tcb 2.ym") 
-;   YMplay(sound) 
-;   Delay(1000) 
-;   YMPause(sound)
-;   YMplay(sound1) 
-;   Delay(1000)
-;   YMpause(sound1) 
-;   YMResume(sound) 
-;   Delay(1000) 
-;   YMresume(sound1)
-;   Delay(3000) 
-;   YMFree(sound1) 
-;   
-;   Repeat
-;     Delay(20) 
-;   Until YMIsOver(sound)  
-;   YMFree(sound) 
-;   
-;   Debug "waited" 
-;   
-; CompilerEndIf 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 244
-; FirstLine = 220
+; CursorPosition = 35
 ; Folding = ---
 ; EnableXP
 ; DPIAware

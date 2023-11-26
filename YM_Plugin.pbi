@@ -2,7 +2,7 @@
 ;Windows x86 
 ;Requires "YM2149SSND.dll"
 ;http://leonard.oxg.free.fr/download/StSound_1_43.zip
-#YM_DEBUG_PLUGIN = #True
+#YM_DEBUG_PLUGIN = #False
 
 CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
   #YM2149SSND_PLUGIN = "x86_Plugins/YM2149SSND.dll"
@@ -171,28 +171,6 @@ Procedure RML_YM_Render(pMusic,*pBuffer,size.i)
   EndIf 
 EndProcedure
 
-;
-; Play Thread 
-;
-Procedure RML_YM_Play(*sound)
-  Debug "--- Play Thread ---"
-  Repeat  
-    Delay(1) 
-  ForEver
-EndProcedure 
-
-;
-; Stop
-;
-Procedure RML_YM_Stop()
-EndProcedure 
-
-;
-; Pause
-;
-Procedure RML_YM_Pause()
-EndProcedure
-
 ;/****** YM_Plugin.pbi/YM_Initialize_SoundServer *****************************
 ;* 
 ;*   NAME	
@@ -207,9 +185,6 @@ EndProcedure
 ;*****************************************************************************
 Procedure RML_YM_Initialize_SoundServer()
   SoundServer::p\Render=@RML_YM_Render()
-  SoundServer::p\Play=@RML_YM_Play()
-  SoundServer::p\Stop=@RML_YM_Stop()
-  SoundServer::p\Pause=@RML_YM_Pause()
   SoundServer::p\Init = YM_Init()
 EndProcedure
 
@@ -262,7 +237,6 @@ CompilerIf #YM_DEBUG_PLUGIN = #True
   
   If RML_YM_LoadMusic("Music/Decade3DDots.ym")   
     SoundServer::Play()
-    YM_Play(SoundServer::p\Init)
   EndIf
     
   Delay(25000)    
@@ -270,8 +244,8 @@ CompilerIf #YM_DEBUG_PLUGIN = #True
   RML_YM_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 262
-; FirstLine = 228
+; CursorPosition = 187
+; FirstLine = 165
 ; Folding = --
 ; EnableXP
 ; DPIAware
