@@ -11,8 +11,8 @@ No, remember I said I'd controdic myself? yes but not in this project githib pag
 [releasing]
 
 # Currently Supports
-YM https://github.com/arnaud-carre/StSound <br>
-SNDH https://github.com/arnaud-carre/sndh-player
+[32] YM https://github.com/arnaud-carre/StSound <br>
+[32/64] SNDH https://github.com/arnaud-carre/sndh-player
 
 # Next Target
 SID, UADE, Quartet
