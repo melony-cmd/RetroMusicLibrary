@@ -7,9 +7,6 @@ let me be very clear and also controdic myself, RML is not and will not -ever- b
 # No gui player then?
 No, remember I said I'd controdic myself? yes but not in this project githib page, when or if I make one for DEBUGGING PURPOSES ONLY that will be it's own thing separate from this one.
 
-# Status
-[releasing]
-
 # Currently Supports
 [32] YM https://github.com/arnaud-carre/StSound <br>
 [32/64] SNDH https://github.com/arnaud-carre/sndh-player
@@ -23,3 +20,6 @@ HighlyExperimental, HighlyQuixotic, HighlyTheoretical, Hively, IXalance, KSS, La
 ProTracker, Quartet, SC68, SidPlay, SoundMon, TFMX, TIATracker, UADE, V2, VGM, VIO2SF, Vorbis, Wav, ZXTune
 
 Insert any other format I might find.
+
+# DLL Source
+Can be found in /Render
