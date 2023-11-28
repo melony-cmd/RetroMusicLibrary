@@ -3,10 +3,43 @@
 CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
   ;#SID_PLUGIN = "x86_Plugins/SID.dll"
                 
-  #SID_PLUGIN = "D:\Work\Code\SDK\Sidplay3-master\Release\libsidplay.dll"
+  #SID_PLUGIN = "D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\SID\Release\libsidplay.dll"
 CompilerElseIf #PB_Compiler_Processor = #PB_Processor_x64
   #SID_PLUGIN = "x64_Plugins/"
 CompilerEndIf
+
+;*****************************************************************************
+; Enumeration SID
+;*****************************************************************************
+Enumeration clock_t
+  #CLOCK_UNKNOWN
+  #CLOCK_PAL
+  #CLOCK_NTSC
+  #CLOCK_ANY
+EndEnumeration
+
+Enumeration model_t
+  #SIDMODEL_UNKNOWN
+  #SIDMODEL_6581
+  #SIDMODEL_8580
+  #SIDMODEL_ANY
+EndEnumeration
+
+Enumeration compatibility_t
+  #COMPATIBILITY_C64   ;///< File is C64 compatible
+  #COMPATIBILITY_PSID  ;///< File is PSID specific
+  #COMPATIBILITY_R64   ;///< File is Real C64 only
+  #COMPATIBILITY_BASIC ;///< File requires C64 Basic
+EndEnumeration
+
+;*****************************************************************************
+; Constants
+;*****************************************************************************
+;/// Vertical-Blanking-Interrupt
+#SPEED_VBI = 0
+
+;/// CIA 1 Timer A
+#SPEED_CIA_1A = 60
 
 ;*****************************************************************************
 ; Prototypes SID
@@ -61,6 +94,8 @@ PrototypeC.i  SidPlayFP_GetCia1TimerA() : Global SidPlayFP_GetCia1TimerA.SidPlay
 PrototypeC.b  SidPlayFP_GetSidStatus(sidNum.l,*regs) : Global SidPlayFP_GetSidStatus.SidPlayFP_GetSidStatus
 
 PrototypeC SidTune_LoadFromFile(fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromFile.SidTune_LoadFromFile
+PrototypeC SidTune_LoadFromCallBack(loader.l,fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromCallBack.SidTune_LoadFromCallBack
+PrototypeC SidTune_LoadFromMemory(*oneFileFormatSidtune,sidtuneLength.l) : Global SidTune_LoadFromMemory.SidTune_LoadFromMemory
 
 XIncludeFile "SoundServer.pbi"
 
@@ -140,6 +175,13 @@ Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)
     SidPlayFP_GetCia1TimerA = GetFunction(dll_plugin,"SidPlayFP_GetCia1TimerA")
     SidPlayFP_GetSidStatus = GetFunction(dll_plugin,"SidPlayFP_GetSidStatus")      
     SidTune_LoadFromFile = GetFunction(dll_plugin,"SidTune_LoadFromFile")      
+    SidTune_LoadFromCallBack = GetFunction(dll_plugin,"SidTune_LoadFromCallBack")    
+    SidTune_LoadFromMemory = GetFunction(dll_plugin,"SidTune_LoadFromMemory")      
+    
+    
+    
+    SidTune_LoadFromMemory = GetFunction(dll_plugin,"SidTune_LoadFromMemory")
+    
     SoundServer::p\library = dll_plugin
   Else 
     ProcedureReturn #False    
@@ -191,6 +233,7 @@ EndProcedure
 Procedure RML_SID_Render(pMusic,*pBuffer,size.i)
   If (pMusic)
     SidPlayFP_Play(*pBuffer,size)
+    ;ShowMemoryViewer(*pBuffer,size)
   EndIf 
 EndProcedure
 
@@ -245,17 +288,15 @@ EndProcedure
 ;*       concerned about over memory usage, even still it does now free the memory.
 ;* 
 ;*****************************************************************************
-Procedure.l RML_SNDH_LoadMusic(file.s) 
+Procedure.l RML_SID_LoadMusic(file.s) 
   fn = OpenFile(#PB_Any,file)
   If fn
     filesize = FileSize(file) 
     sid_mem = AllocateMemory(filesize)
     If sid_mem
       ReadData(fn,sid_mem,filesize)       
-      ;result = SidTune_LoadFromFile(sid_mem)
-      ; we no longer need the file anymore SNDH.dll 
-      ; has used ICE to decompress it.
-      FreeMemory(sid_mem)                  
+      result = SidTune_LoadFromMemory(sid_mem,filesize)
+      FreeMemory(sid_mem)
     EndIf      
     CloseFile(fn)
   EndIf  
@@ -267,11 +308,8 @@ EndProcedure
 ;*****************************************************************************
 CompilerIf #SID_DEBUG_PLUGIN = #True
   RML_SID_Initialize_SoundServer()
-  RML_SID_OpenLibrary()
-    
-  ;Debug RML_SNDH_LoadMusic("Music/Wiklund_-_Six_hours.sid")
-  ;Debug SidPlayFP_Load("Music/Wiklund_-_Six_hours.sid")
-  Debug SidTune_LoadFromFile("Music/Wiklund_-_Six_hours.sid")
+  Debug RML_SID_OpenLibrary()   
+  Debug RML_SID_LoadMusic("Music/Wiklund_-_Six_hours.sid")
   
   SoundServer::Play()
   
@@ -281,8 +319,8 @@ CompilerIf #SID_DEBUG_PLUGIN = #True
 CompilerEndIf
 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 197
-; FirstLine = 175
+; CursorPosition = 311
+; FirstLine = 277
 ; Folding = --
 ; EnableXP
 ; DPIAware
