@@ -2,7 +2,7 @@
 
 CompilerIf #PB_Compiler_Processor = #PB_Processor_x86
   ;#SID_PLUGIN = "x86_Plugins/SID.dll"
-                
+  
   #SID_PLUGIN = "D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\SID\Release\libsidplay.dll"
 CompilerElseIf #PB_Compiler_Processor = #PB_Processor_x64
   #SID_PLUGIN = "x64_Plugins/"
@@ -44,55 +44,54 @@ EndEnumeration
 ;*****************************************************************************
 ; Prototypes SID
 ;*****************************************************************************
-PrototypeC  SidConfig_SetDefaultC64Model(c_defaultC64Model.l) : Global SidConfig_SetDefaultC64Model.SidConfig_SetDefaultC64Model
-PrototypeC  SidConfig_SetForceC64Model(forceC64Model.b) : Global SidConfig_SetForceC64Model.SidConfig_SetForceC64Model
-PrototypeC  SidConfig_SetDefaultSidModel(c_defaultSidModel.l) : Global SidConfig_SetDefaultSidModel.SidConfig_SetDefaultSidModel
-PrototypeC  SidConfig_SetForceSidModel(forceSidModel.b) : Global SidConfig_SetForceSidModel.SidConfig_SetForceSidModel
-PrototypeC  SidConfig_SetDigiBoost(digiBoost.b) : Global SidConfig_SetDigiBoost.SidConfig_SetDigiBoost
-PrototypeC  SidConfig_SetCIAModel(ciaModel.l) : Global SidConfig_SetCIAModel.SidConfig_SetCIAModel
-PrototypeC  SidConfig_SetPlayBack(playback.l) : Global SidConfig_SetPlayBack.SidConfig_SetPlayBack
-PrototypeC  SidConfig_SetFrequency(frequency.l) : Global SidConfig_SetFrequency.SidConfig_SetFrequency
-PrototypeC  SidConfig_SetSecondSidAddress(secondSidAddress.l) : Global SidConfig_SetSecondSidAddress.SidConfig_SetSecondSidAddress
-PrototypeC  SidConfig_SetThirdSidAddress(thirdSidAddress.l) : Global SidConfig_SetThirdSidAddress.SidConfig_SetThirdSidAddress
-PrototypeC  SidConfig_SetSidEmulation(sidEmulation.l) : Global SidConfig_SetSidEmulation.SidConfig_SetSidEmulation
-PrototypeC  SidConfig_SetLeftVolume(leftVolume.l) : Global SidConfig_SetLeftVolume.SidConfig_SetLeftVolume
-PrototypeC  SidConfig_SetRightVolume(rightVolume.l) : Global SidConfig_SetRightVolume.SidConfig_SetRightVolume
-PrototypeC  SidConfig_SetPowerOnDelay(delay.l) : Global SidConfig_SetPowerOnDelay.SidConfig_SetPowerOnDelay
-PrototypeC  SidConfig_SetSamplingMethod(samplingMethod.l) : Global SidConfig_SetSamplingMethod.SidConfig_SetSamplingMethod
-PrototypeC  SidConfig_SetFastSampling(fastSampling.b) : Global SidConfig_SetFastSampling.SidConfig_SetFastSampling
-PrototypeC.l  SidInfo_LibraryName() : Global SidInfo_LibraryName.SidInfo_LibraryName
-PrototypeC.l  SidInfo_Version() : Global SidInfo_Version.SidInfo_Version
-PrototypeC.i  SidInfo_NumberOfCredits() : Global SidInfo_NumberOfCredits.SidInfo_NumberOfCredits
+PrototypeC SidConfig_SetDefaultC64Model(c_defaultC64Model.l) : Global SidConfig_SetDefaultC64Model.SidConfig_SetDefaultC64Model
+PrototypeC SidConfig_SetForceC64Model(forceC64Model.b) : Global SidConfig_SetForceC64Model.SidConfig_SetForceC64Model
+PrototypeC SidConfig_SetDefaultSidModel(c_defaultSidModel.l) : Global SidConfig_SetDefaultSidModel.SidConfig_SetDefaultSidModel
+PrototypeC SidConfig_SetForceSidModel(forceSidModel.b) : Global SidConfig_SetForceSidModel.SidConfig_SetForceSidModel
+PrototypeC SidConfig_SetDigiBoost(digiBoost.b) : Global SidConfig_SetDigiBoost.SidConfig_SetDigiBoost
+PrototypeC SidConfig_SetCIAModel(ciaModel.l) : Global SidConfig_SetCIAModel.SidConfig_SetCIAModel
+PrototypeC SidConfig_SetPlayBack(playback.l) : Global SidConfig_SetPlayBack.SidConfig_SetPlayBack
+PrototypeC SidConfig_SetFrequency(frequency.l) : Global SidConfig_SetFrequency.SidConfig_SetFrequency
+PrototypeC SidConfig_SetSecondSidAddress(secondSidAddress.l) : Global SidConfig_SetSecondSidAddress.SidConfig_SetSecondSidAddress
+PrototypeC SidConfig_SetThirdSidAddress(thirdSidAddress.l) : Global SidConfig_SetThirdSidAddress.SidConfig_SetThirdSidAddress
+PrototypeC SidConfig_SetSidEmulation(sidEmulation.l) : Global SidConfig_SetSidEmulation.SidConfig_SetSidEmulation
+PrototypeC SidConfig_SetLeftVolume(leftVolume.l) : Global SidConfig_SetLeftVolume.SidConfig_SetLeftVolume
+PrototypeC SidConfig_SetRightVolume(rightVolume.l) : Global SidConfig_SetRightVolume.SidConfig_SetRightVolume
+PrototypeC SidConfig_SetPowerOnDelay(delay.l) : Global SidConfig_SetPowerOnDelay.SidConfig_SetPowerOnDelay
+PrototypeC SidConfig_SetSamplingMethod(samplingMethod.l) : Global SidConfig_SetSamplingMethod.SidConfig_SetSamplingMethod
+PrototypeC SidConfig_SetFastSampling(fastSampling.b) : Global SidConfig_SetFastSampling.SidConfig_SetFastSampling
+PrototypeC.l SidInfo_LibraryName() : Global SidInfo_LibraryName.SidInfo_LibraryName
+PrototypeC.l SidInfo_Version() : Global SidInfo_Version.SidInfo_Version
+PrototypeC.i SidInfo_NumberOfCredits() : Global SidInfo_NumberOfCredits.SidInfo_NumberOfCredits
 PrototypeC.l SidInfo_Credits(i.l) : Global SidInfo_Credits.SidInfo_Credits
-PrototypeC.i  SidInfo_MaxSIDS() : Global SidInfo_MaxSIDS.SidInfo_MaxSIDS
-PrototypeC.i  SidInfo_Channels() : Global SidInfo_Channels.SidInfo_Channels
-PrototypeC.i  SidInfo_DriverAddr() : Global SidInfo_DriverAddr.SidInfo_DriverAddr
-PrototypeC.i  SidInfo_DriverLength() : Global SidInfo_DriverLength.SidInfo_DriverLength
-PrototypeC.i  SidInfo_PownOnDelay() : Global SidInfo_PownOnDelay.SidInfo_PownOnDelay
-PrototypeC.l  SidInfo_SpeedString() : Global SidInfo_SpeedString.SidInfo_SpeedString
-PrototypeC.l  SidInfo_KernalDesc() : Global SidInfo_KernalDesc.SidInfo_KernalDesc
-PrototypeC.l  SidInfo_BasicDesc() : Global SidInfo_BasicDesc.SidInfo_BasicDesc
-PrototypeC.l  SidInfo_ChargenDesc() : Global SidInfo_ChargenDesc.SidInfo_ChargenDesc
-PrototypeC.l  SidPlayFP_GetConfig() : Global SidPlayFP_GetConfig.SidPlayFP_GetConfig
-PrototypeC.l  SidPlayFP_Information() : Global SidPlayFP_Information.SidPlayFP_Information
-PrototypeC.b  SidPlayFP_SetConfig(*SidConfig) : Global SidPlayFP_SetConfig.SidPlayFP_SetConfig
-PrototypeC.l  SidPlayFP_Error() : Global SidPlayFP_Error.SidPlayFP_Error
-PrototypeC.b  SidPlayFP_FastForward(percent.l) : Global SidPlayFP_FastForward.SidPlayFP_FastForward
-PrototypeC.b  SidPlayFP_Load(*tune) : Global SidPlayFP_Load.SidPlayFP_Load
-PrototypeC.i  SidPlayFP_Play(*buffer,count.l) : Global SidPlayFP_Play.SidPlayFP_Play
-PrototypeC.b  SidPlayFP_isPlayering() : Global SidPlayFP_isPlayering.SidPlayFP_isPlayering
-PrototypeC  SidPlayFP_Stop() : Global SidPlayFP_Stop.SidPlayFP_Stop
-PrototypeC  SidPlayFP_Debug(enable.b,*out) : Global SidPlayFP_Debug.SidPlayFP_Debug
-PrototypeC  SidPlayFP_Mute(sidNum.l,voice.l,enable.b) : Global SidPlayFP_Mute.SidPlayFP_Mute
-PrototypeC.i  SidPlayFP_Time() : Global SidPlayFP_Time.SidPlayFP_Time
-PrototypeC.i  SidPlayFP_TimeMs() : Global SidPlayFP_TimeMs.SidPlayFP_TimeMs
-PrototypeC  SidPlayFP_SetRoms(kernal.l,*basic,*character = 0) : Global SidPlayFP_SetRoms.SidPlayFP_SetRoms
-PrototypeC  SidPlayFP_SetKernal(*rom) : Global SidPlayFP_SetKernal.SidPlayFP_SetKernal
-PrototypeC  SidPlayFP_SetBasic(*rom) : Global SidPlayFP_SetBasic.SidPlayFP_SetBasic
-PrototypeC  SidPlayFP_SetChargen(*rom) : Global SidPlayFP_SetChargen.SidPlayFP_SetChargen
-PrototypeC.i  SidPlayFP_GetCia1TimerA() : Global SidPlayFP_GetCia1TimerA.SidPlayFP_GetCia1TimerA
-PrototypeC.b  SidPlayFP_GetSidStatus(sidNum.l,*regs) : Global SidPlayFP_GetSidStatus.SidPlayFP_GetSidStatus
-
+PrototypeC.i SidInfo_MaxSIDS() : Global SidInfo_MaxSIDS.SidInfo_MaxSIDS
+PrototypeC.i SidInfo_Channels() : Global SidInfo_Channels.SidInfo_Channels
+PrototypeC.i SidInfo_DriverAddr() : Global SidInfo_DriverAddr.SidInfo_DriverAddr
+PrototypeC.i SidInfo_DriverLength() : Global SidInfo_DriverLength.SidInfo_DriverLength
+PrototypeC.i SidInfo_PownOnDelay() : Global SidInfo_PownOnDelay.SidInfo_PownOnDelay
+PrototypeC.l SidInfo_SpeedString() : Global SidInfo_SpeedString.SidInfo_SpeedString
+PrototypeC.l SidInfo_KernalDesc() : Global SidInfo_KernalDesc.SidInfo_KernalDesc
+PrototypeC.l SidInfo_BasicDesc() : Global SidInfo_BasicDesc.SidInfo_BasicDesc
+PrototypeC.l SidInfo_ChargenDesc() : Global SidInfo_ChargenDesc.SidInfo_ChargenDesc
+PrototypeC.l SidPlayFP_GetConfig() : Global SidPlayFP_GetConfig.SidPlayFP_GetConfig
+PrototypeC.l SidPlayFP_Information() : Global SidPlayFP_Information.SidPlayFP_Information
+PrototypeC.b SidPlayFP_SetConfig(*SidConfig) : Global SidPlayFP_SetConfig.SidPlayFP_SetConfig
+PrototypeC.l SidPlayFP_Error() : Global SidPlayFP_Error.SidPlayFP_Error
+PrototypeC.b SidPlayFP_FastForward(percent.l) : Global SidPlayFP_FastForward.SidPlayFP_FastForward
+PrototypeC.b SidPlayFP_Load(*tune) : Global SidPlayFP_Load.SidPlayFP_Load
+PrototypeC.i SidPlayFP_Play(*buffer,count.l) : Global SidPlayFP_Play.SidPlayFP_Play
+PrototypeC.b SidPlayFP_isPlayering() : Global SidPlayFP_isPlayering.SidPlayFP_isPlayering
+PrototypeC SidPlayFP_Stop() : Global SidPlayFP_Stop.SidPlayFP_Stop
+PrototypeC SidPlayFP_Debug(enable.b,*out) : Global SidPlayFP_Debug.SidPlayFP_Debug
+PrototypeC SidPlayFP_Mute(sidNum.l,voice.l,enable.b) : Global SidPlayFP_Mute.SidPlayFP_Mute
+PrototypeC.i SidPlayFP_Time() : Global SidPlayFP_Time.SidPlayFP_Time
+PrototypeC.i SidPlayFP_TimeMs() : Global SidPlayFP_TimeMs.SidPlayFP_TimeMs
+PrototypeC SidPlayFP_SetRoms(kernal.l,*basic,*character = 0) : Global SidPlayFP_SetRoms.SidPlayFP_SetRoms
+PrototypeC SidPlayFP_SetKernal(*rom) : Global SidPlayFP_SetKernal.SidPlayFP_SetKernal
+PrototypeC SidPlayFP_SetBasic(*rom) : Global SidPlayFP_SetBasic.SidPlayFP_SetBasic
+PrototypeC SidPlayFP_SetChargen(*rom) : Global SidPlayFP_SetChargen.SidPlayFP_SetChargen
+PrototypeC.i SidPlayFP_GetCia1TimerA() : Global SidPlayFP_GetCia1TimerA.SidPlayFP_GetCia1TimerA
+PrototypeC.b SidPlayFP_GetSidStatus(sidNum.l,*regs) : Global SidPlayFP_GetSidStatus.SidPlayFP_GetSidStatus
 PrototypeC SidTune_LoadFromFile(fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromFile.SidTune_LoadFromFile
 PrototypeC SidTune_LoadFromCallBack(loader.l,fileName.s,fileNameExt.l=0,separatorIsSlash = #False) : Global SidTune_LoadFromCallBack.SidTune_LoadFromCallBack
 PrototypeC SidTune_LoadFromMemory(*oneFileFormatSidtune,sidtuneLength.l) : Global SidTune_LoadFromMemory.SidTune_LoadFromMemory
@@ -107,6 +106,32 @@ PrototypeC.s SidTune_StatusString() : Global SidTune_StatusString.SidTune_Status
 PrototypeC.b SidTune_PlaceSidTuneInC64mem(*mem) : Global SidTune_PlaceSidTuneInC64mem.SidTune_PlaceSidTuneInC64mem
 PrototypeC.s SidTune_CreateMD5(*md5) : Global SidTune_CreateMD5.SidTune_CreateMD5
 PrototypeC.s SidTune_CreateMD5New(*md5) : Global SidTune_CreateMD5New.SidTune_CreateMD5New
+PrototypeC.i SidTuneInfo_LoadAddr() : Global SidTuneInfo_LoadAddr.SidTuneInfo_LoadAddr
+PrototypeC.i SidTuneInfo_InitAddr() : Global SidTuneInfo_InitAddr.SidTuneInfo_InitAddr
+PrototypeC.i SidTuneInfo_PlayAddr() : Global SidTuneInfo_PlayAddr.SidTuneInfo_PlayAddr
+PrototypeC.i SidTuneInfo_Songs() : Global SidTuneInfo_Songs.SidTuneInfo_Songs
+PrototypeC.i SidTuneInfo_StartSong() : Global SidTuneInfo_StartSong.SidTuneInfo_StartSong
+PrototypeC.i SidTuneInfo_CurrentSong() : Global SidTuneInfo_CurrentSong.SidTuneInfo_CurrentSong 
+PrototypeC.i SidTuneInfo_SidChipBase(i.i) : Global SidTuneInfo_SidChipBase.SidTuneInfo_SidChipBase 
+PrototypeC.i SidTuneInfo_SidChips() : Global SidTuneInfo_SidChips.SidTuneInfo_SidChips
+PrototypeC.i SidTuneInfo_SongSpeed() : Global SidTuneInfo_SongSpeed.SidTuneInfo_SongSpeed
+PrototypeC.i SidTuneInfo_RelocStartPage() : Global SidTuneInfo_RelocStartPage.SidTuneInfo_RelocStartPage
+PrototypeC.i SidTuneInfo_RelocPages() : Global SidTuneInfo_RelocPages.SidTuneInfo_RelocPages
+PrototypeC.i SidTuneInfo_SidModel(i.i) : Global SidTuneInfo_SidModel.SidTuneInfo_SidModel
+PrototypeC.i SidTuneInfo_Compatibility() : Global SidTuneInfo_Compatibility.SidTuneInfo_Compatibility 
+PrototypeC.i SidTuneInfo_NumberOfInfoStrings() : Global SidTuneInfo_NumberOfInfoStrings.SidTuneInfo_NumberOfInfoStrings
+PrototypeC.s SidTuneInfo_InfoString(i.i) : Global SidTuneInfo_InfoString.SidTuneInfo_InfoString
+PrototypeC.i SidTuneInfo_NumberOfCommentStrings() : Global SidTuneInfo_NumberOfCommentStrings.SidTuneInfo_NumberOfCommentStrings
+PrototypeC.s SidTuneInfo_CommentString(i.i) : Global SidTuneInfo_CommentString.SidTuneInfo_CommentString
+PrototypeC.s SidTuneInfo_MusString() : Global SidTuneInfo_MusString.SidTuneInfo_MusString
+PrototypeC.i SidTuneInfo_DataFileLen() : Global SidTuneInfo_DataFileLen.SidTuneInfo_DataFileLen
+PrototypeC.i SidTuneInfo_C64dataLen() : Global SidTuneInfo_C64dataLen.SidTuneInfo_C64dataLen
+PrototypeC.i SidTuneInfo_ClockSpeed() : Global SidTuneInfo_ClockSpeed.SidTuneInfo_ClockSpeed
+PrototypeC.s SidTuneInfo_FormatString() : Global SidTuneInfo_FormatString.SidTuneInfo_FormatString
+PrototypeC.b SidTuneInfo_FixLoad() : Global SidTuneInfo_FixLoad.SidTuneInfo_FixLoad
+PrototypeC.s SidTuneInfo_Path() : Global SidTuneInfo_Path.SidTuneInfo_Path
+PrototypeC.s SidTuneInfo_DataFileName() : Global SidTuneInfo_DataFileName.SidTuneInfo_DataFileName
+PrototypeC.s SidTuneInfo_InfoFileName() : Global SidTuneInfo_InfoFileName.SidTuneInfo_InfoFileName
 
 XIncludeFile "SoundServer.pbi"
 
@@ -203,7 +228,37 @@ Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)
     SidTune_PlaceSidTuneInC64mem = GetFunction(dll_plugin,"SidTune_PlaceSidTuneInC64mem")
     SidTune_CreateMD5 = GetFunction(dll_plugin,"SidTune_CreateMD5")
     SidTune_CreateMD5New = GetFunction(dll_plugin,"SidTune_CreateMD5New")
-           
+    ;-SidTuneInfo
+    SidTuneInfo_LoadAddr = GetFunction(dll_plugin,"SidTuneInfo_LoadAddr")
+    SidTuneInfo_InitAddr = GetFunction(dll_plugin,"SidTuneInfo_InitAddr")
+    SidTuneInfo_PlayAddr = GetFunction(dll_plugin,"SidTuneInfo_PlayAddr")
+    SidTuneInfo_Songs = GetFunction(dll_plugin,"SidTuneInfo_Songs")
+    SidTuneInfo_StartSong = GetFunction(dll_plugin,"SidTuneInfo_StartSong")   
+    SidTuneInfo_CurrentSong = GetFunction(dll_plugin,"SidTuneInfo_CurrentSong")
+    SidTuneInfo_SidChipBase = GetFunction(dll_plugin,"SidTuneInfo_SidChipBase")
+    SidTuneInfo_SidChips = GetFunction(dll_plugin,"SidTuneInfo_SidChips")
+    SidTuneInfo_SongSpeed = GetFunction(dll_plugin,"SidTuneInfo_SongSpeed")
+    SidTuneInfo_RelocStartPage = GetFunction(dll_plugin,"SidTuneInfo_RelocStartPage")
+    SidTuneInfo_SidModel = GetFunction(dll_plugin,"SidTuneInfo_SidModel")
+    SidTuneInfo_Compatibility = GetFunction(dll_plugin,"SidTuneInfo_Compatibility")
+    SidTuneInfo_NumberOfInfoStrings = GetFunction(dll_plugin,"SidTuneInfo_NumberOfInfoStrings")
+    SidTuneInfo_InfoString = GetFunction(dll_plugin,"SidTuneInfo_InfoString")
+    SidTuneInfo_NumberOfCommentStrings = GetFunction(dll_plugin,"SidTuneInfo_NumberOfCommentStrings")
+    SidTuneInfo_DataFileLen = GetFunction(dll_plugin,"SidTuneInfo_DataFileLen")
+    SidTuneInfo_C64dataLen = GetFunction(dll_plugin,"SidTuneInfo_C64dataLen")
+    SidTuneInfo_ClockSpeed = GetFunction(dll_plugin,"SidTuneInfo_ClockSpeed")
+    SidTuneInfo_FormatString = GetFunction(dll_plugin,"SidTuneInfo_FormatString")
+    SidTuneInfo_FixLoad = GetFunction(dll_plugin,"SidTuneInfo_FixLoad")
+    SidTuneInfo_Path = GetFunction(dll_plugin,"SidTuneInfo_Path")
+    SidTuneInfo_DataFileName = GetFunction(dll_plugin,"SidTuneInfo_DataFileName")
+    SidTuneInfo_InfoFileName = GetFunction(dll_plugin,"SidTuneInfo_InfoFileName")
+       
+    ExamineLibraryFunctions(dll_plugin)
+  
+    While NextLibraryFunction()
+      Debug LibraryFunctionName()+" "+LibraryFunctionAddress()
+    Wend
+    
     SoundServer::p\library = dll_plugin
   Else 
     ProcedureReturn #False    
@@ -332,7 +387,9 @@ CompilerIf #SID_DEBUG_PLUGIN = #True
   RML_SID_Initialize_SoundServer()
   Debug RML_SID_OpenLibrary()   
   Debug RML_SID_LoadMusic("Music/Wiklund_-_Six_hours.sid")  
-  SidTune_SelectSong(1)
+;  SidTune_SelectSong(1)
+  
+;  Debug SidTuneInfo_StartSong()  
   
   SoundServer::Play()
   
@@ -344,8 +401,8 @@ CompilerEndIf
 End
 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 344
-; FirstLine = 302
+; CursorPosition = 146
+; FirstLine = 104
 ; Folding = --
 ; EnableXP
 ; DPIAware

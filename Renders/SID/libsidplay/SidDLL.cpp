@@ -538,41 +538,48 @@ extern "C" __declspec(dllexport) bool SidTune_PlaceSidTuneInC64mem(libsidplayfp:
 /******************************************************************************
  *  SidTuneInfo.h
  ******************************************************************************/
- /**
-  * Load Address.
-  */
-//extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_LoadAddr(void) {
-//}
+/**
+ * Load Address.
+ */
+extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_LoadAddr(void) {
+	return c_tuneinfo->loadAddr();
+}
 
 /**
  * Init Address.
  */
-//extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_InitAddr(void) {
-// }
+extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_InitAddr(void) {
+	return c_tuneinfo->initAddr();
+}
 
 /**
  * Play Address.
  */
-//extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_PlayAddr(void) {
-// }
+extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_PlayAddr(void) {
+	return c_tuneinfo->playAddr();
+}
 
 /**
  * The number of songs.
  */
-//extern "C" __declspec(dllexport) unsigned int SidTuneInfo_Songs(void) {
-// }
+extern "C" __declspec(dllexport) unsigned int SidTuneInfo_Songs(void) {
+	return c_tuneinfo->songs();
+
+}
 
 /**
  * The default starting song.
  */
-//extern "C" __declspec(dllexport) unsigned int SidTuneInfo_StartSong(void) {
-// }
+extern "C" __declspec(dllexport) unsigned int SidTuneInfo_StartSong(void) {
+	return c_tuneinfo->startSong();
+}
 
 /**
  * The tune that has been initialized.
  */
-//extern "C" __declspec(dllexport) unsigned int SidTuneInfo_CurrentSong(void) {
-// }
+extern "C" __declspec(dllexport) unsigned int SidTuneInfo_CurrentSong(void) {
+	return c_tuneinfo->currentSong();
+}
 
 /**
  * @name Base addresses
@@ -580,45 +587,52 @@ extern "C" __declspec(dllexport) bool SidTune_PlaceSidTuneInC64mem(libsidplayfp:
  * - 0xD400 for the 1st SID
  * - 0 if the nth SID is not required
  */
-//extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_SidChipBase(unsigned int i) {
-// }
+extern "C" __declspec(dllexport) uint_least16_t SidTuneInfo_SidChipBase(unsigned int i) {
+	return c_tuneinfo->sidChipBase(i);
+}
 
 /**
  * The number of SID chips required by the tune.
  */
-//extern "C" __declspec(dllexport) int SidTuneInfo_SidChips(void) {
-// }
+extern "C" __declspec(dllexport) int SidTuneInfo_SidChips(void) {
+	return c_tuneinfo->sidChips();
+}
 
 /**
  * Intended speed.
  */
-//extern "C" __declspec(dllexport) int SidTuneInfo_SongSpeed(void) {
-// }
+extern "C" __declspec(dllexport) int SidTuneInfo_SongSpeed(void) {
+	return c_tuneinfo->songSpeed();
+}
 
 /**
  * First available page for relocation.
  */
-//extern "C" __declspec(dllexport) uint_least8_t SidTuneInfo_RelocStartPage(void) {
-// }
+extern "C" __declspec(dllexport) uint_least8_t SidTuneInfo_RelocStartPage(void) {
+	return c_tuneinfo->relocStartPage();
+}
 
 /**
  * Number of pages available for relocation.
  */
-//extern "C" __declspec(dllexport) uint_least8_t SidTuneInfo_RelocPages(void) {
-// }
+extern "C" __declspec(dllexport) uint_least8_t SidTuneInfo_RelocPages(void) {
+	return c_tuneinfo->relocPages();
+}
 
 /**
  * @name SID model
  * The SID chip model(s) requested by the sidtune.
  */
-//extern "C" __declspec(dllexport) model_t SidTuneInfo_SidModel(unsigned int i) {
-// }
+extern "C" __declspec(dllexport) int SidTuneInfo_SidModel(unsigned int i) {
+	return c_tuneinfo->sidModel(i);
+}
 
 /**
  * Compatibility requirements.
  */
-//extern "C" __declspec(dllexport) compatibility_t SidTuneInfo_Compatibility(void) {
-// }
+extern "C" __declspec(dllexport) int SidTuneInfo_Compatibility(void) {
+	return c_tuneinfo->compatibility();
+}
 
 /**
  * @name Tune infos
@@ -627,67 +641,80 @@ extern "C" __declspec(dllexport) bool SidTune_PlaceSidTuneInC64mem(libsidplayfp:
  * - 1 = Author
  * - 2 = Released
  */
-//extern "C" __declspec(dllexport) unsigned int SidTuneInfo_NumberOfInfoStrings(void) { ///< The number of available text info lines
-// }
-//extern "C" __declspec(dllexport) const char * SidTuneInfo_InfoString(unsigned int i) { ///< Text info from the format headers etc.
-// }
+extern "C" __declspec(dllexport) unsigned int SidTuneInfo_NumberOfInfoStrings(void) { ///< The number of available text info lines
+	return c_tuneinfo->numberOfInfoStrings();
+}
+extern "C" __declspec(dllexport) const char * SidTuneInfo_InfoString(unsigned int i) { ///< Text info from the format headers etc.
+	return c_tuneinfo->infoString(i);
+}
 
 /**
  * @name Tune comments
  * MUS comments.
  */
-//extern "C" __declspec(dllexport) unsigned int SidTuneInfo_NumberOfCommentStrings(void) {
-// }
-//extern "C" __declspec(dllexport) const char* SidTuneInfo_CommentString(unsigned int i) {
-// }
-//extern "C" __declspec(dllexport) const char* SidTuneInfo_MusString(void) {
-// }
+extern "C" __declspec(dllexport) unsigned int SidTuneInfo_NumberOfCommentStrings(void) {
+	return c_tuneinfo->numberOfCommentStrings();
+}
+extern "C" __declspec(dllexport) const char* SidTuneInfo_CommentString(unsigned int i) {
+	return c_tuneinfo->commentString(i);
+}
+extern "C" __declspec(dllexport) const char* SidTuneInfo_MusString(void) {
+	return c_tuneinfo->musString();
+}
 
 /**
  * Length of single-file sidtune file.
  */
-//extern "C" __declspec(dllexport) uint_least32_t SidTuneInfo_DataFileLen(void) {
-// }
+extern "C" __declspec(dllexport) uint_least32_t SidTuneInfo_DataFileLen(void) {
+	return c_tuneinfo->dataFileLen();
+}
 
 /**
  * Length of raw C64 data without load address.
  */
-//extern "C" __declspec(dllexport) uint_least32_t SidTuneInfo_C64dataLen(void) {
-// }
+extern "C" __declspec(dllexport) uint_least32_t SidTuneInfo_C64dataLen(void) {
+	return c_tuneinfo->c64dataLen();
+}
 
 /**
  * The tune clock speed.
  */
-//extern "C" __declspec(dllexport) clock_t SidTuneInfo_ClockSpeed(void) {
-// }
+extern "C" __declspec(dllexport) int SidTuneInfo_ClockSpeed(void) {
+	return c_tuneinfo->clockSpeed();
+}
 
 /**
  * The name of the identified file format.
  */
-//extern "C" __declspec(dllexport) const char * SidTuneInfo_FormatString(void) {
-// }
+extern "C" __declspec(dllexport) const char * SidTuneInfo_FormatString(void) {
+	return c_tuneinfo->formatString();
+}
 
 /**
  * Whether load address might be duplicate.
  */
-//extern "C" __declspec(dllexport) bool SidTuneInfo_FixLoad(void) {
-// }
+extern "C" __declspec(dllexport) bool SidTuneInfo_FixLoad(void) {
+	return c_tuneinfo->fixLoad();
+}
 
 /**
  * Path to sidtune files.
  */
-//extern "C" __declspec(dllexport) const char * SidTuneInfo_Path(void) {
-// }
+extern "C" __declspec(dllexport) const char * SidTuneInfo_Path(void) {
+	return c_tuneinfo->path();
+}
 
 /**
  * A first file: e.g. "foo.sid" or "foo.mus".
  */
-//extern "C" __declspec(dllexport) const char * SidTuneInfo_DataFileName(void) {
-// }
+extern "C" __declspec(dllexport) const char * SidTuneInfo_DataFileName(void) {
+	return c_tuneinfo->dataFileName();
+}
 
 /**
  * A second file: e.g. "foo.str".
  * Returns 0 if none.
  */
-//extern "C" __declspec(dllexport) const char * SidTuneInfo_InfoFileName(void) {
-// }
+extern "C" __declspec(dllexport) const char * SidTuneInfo_InfoFileName(void) {
+	return c_tuneinfo->infoFileName();
+}
