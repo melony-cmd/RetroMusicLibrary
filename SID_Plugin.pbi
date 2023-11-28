@@ -94,8 +94,19 @@ PrototypeC.i  SidPlayFP_GetCia1TimerA() : Global SidPlayFP_GetCia1TimerA.SidPlay
 PrototypeC.b  SidPlayFP_GetSidStatus(sidNum.l,*regs) : Global SidPlayFP_GetSidStatus.SidPlayFP_GetSidStatus
 
 PrototypeC SidTune_LoadFromFile(fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromFile.SidTune_LoadFromFile
-PrototypeC SidTune_LoadFromCallBack(loader.l,fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromCallBack.SidTune_LoadFromCallBack
+PrototypeC SidTune_LoadFromCallBack(loader.l,fileName.s,fileNameExt.l=0,separatorIsSlash = #False) : Global SidTune_LoadFromCallBack.SidTune_LoadFromCallBack
 PrototypeC SidTune_LoadFromMemory(*oneFileFormatSidtune,sidtuneLength.l) : Global SidTune_LoadFromMemory.SidTune_LoadFromMemory
+PrototypeC SidTune_LoadObject(fileName.s,separatorIsSlash.b) : Global SidTune_LoadObject.SidTune_LoadObject
+PrototypeC SidTune_LoadObjectCallBack(*loader,fileName.s,separatorIsSlash.b) : Global SidTune_LoadObjectCallBack.SidTune_LoadObjectCallBack 
+PrototypeC SidTune_Read(*sourceBuffer,bufferLen.l) : Global SidTune_Read.SidTune_Read
+PrototypeC SidTune_SelectSong(songNum.l) : Global SidTune_SelectSong.SidTune_SelectSong
+PrototypeC.l SidTune_GetInfo() : Global SidTune_GetInfo.SidTune_GetInfo
+PrototypeC.l SidTune_GetInfoSubSong(songNum) : Global SidTune_GetInfoSubSong.SidTune_GetInfoSubSong
+PrototypeC.b SidTune_GetStatus() : Global SidTune_GetStatus.SidTune_GetStatus
+PrototypeC.s SidTune_StatusString() : Global SidTune_StatusString.SidTune_StatusString
+PrototypeC.b SidTune_PlaceSidTuneInC64mem(*mem) : Global SidTune_PlaceSidTuneInC64mem.SidTune_PlaceSidTuneInC64mem
+PrototypeC.s SidTune_CreateMD5(*md5) : Global SidTune_CreateMD5.SidTune_CreateMD5
+PrototypeC.s SidTune_CreateMD5New(*md5) : Global SidTune_CreateMD5New.SidTune_CreateMD5New
 
 XIncludeFile "SoundServer.pbi"
 
@@ -126,6 +137,7 @@ XIncludeFile "SoundServer.pbi"
 Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)  
   dll_plugin = OpenLibrary(#PB_Any,library)
   If dll_plugin
+    ;-SidConfig
     SidConfig_SetDefaultC64Model = GetFunction(dll_plugin,"SidConfig_SetDefaultC64Model")
     SidConfig_SetForceC64Model = GetFunction(dll_plugin,"SidConfig_SetForceC64Model")
     SidConfig_SetDefaultSidModel = GetFunction(dll_plugin,"SidConfig_SetDefaultSidModel")
@@ -142,6 +154,7 @@ Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)
     SidConfig_SetPowerOnDelay = GetFunction(dll_plugin,"SidConfig_SetPowerOnDelay")
     SidConfig_SetSamplingMethod = GetFunction(dll_plugin,"SidConfig_SetSamplingMethod")
     SidConfig_SetFastSampling = GetFunction(dll_plugin,"SidConfig_SetFastSampling")
+    ;-SidInfo
     SidInfo_LibraryName = GetFunction(dll_plugin,"SidInfo_LibraryName")
     SidInfo_Version = GetFunction(dll_plugin,"SidInfo_Version")
     SidInfo_NumberOfCredits = GetFunction(dll_plugin,"SidInfo_NumberOfCredits")
@@ -155,6 +168,7 @@ Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)
     SidInfo_KernalDesc = GetFunction(dll_plugin,"SidInfo_KernalDesc")
     SidInfo_BasicDesc = GetFunction(dll_plugin,"SidInfo_BasicDesc")
     SidInfo_ChargenDesc = GetFunction(dll_plugin,"SidInfo_ChargenDesc")
+    ;-SidPlayFP
     SidPlayFP_GetConfig = GetFunction(dll_plugin,"SidPlayFP_GetConfig")
     SidPlayFP_Information = GetFunction(dll_plugin,"SidPlayFP_Information")
     SidPlayFP_SetConfig = GetFunction(dll_plugin,"SidPlayFP_SetConfig")
@@ -173,15 +187,23 @@ Procedure RML_SID_OpenLibrary(library.s=#SID_PLUGIN)
     SidPlayFP_SetBasic = GetFunction(dll_plugin,"SidPlayFP_SetBasic")
     SidPlayFP_SetChargen = GetFunction(dll_plugin,"SidPlayFP_SetChargen")
     SidPlayFP_GetCia1TimerA = GetFunction(dll_plugin,"SidPlayFP_GetCia1TimerA")
-    SidPlayFP_GetSidStatus = GetFunction(dll_plugin,"SidPlayFP_GetSidStatus")      
-    SidTune_LoadFromFile = GetFunction(dll_plugin,"SidTune_LoadFromFile")      
+    SidPlayFP_GetSidStatus = GetFunction(dll_plugin,"SidPlayFP_GetSidStatus")
+    ;-SidTune
+    SidTune_LoadFromFile = GetFunction(dll_plugin,"SidTune_LoadFromFile")
     SidTune_LoadFromCallBack = GetFunction(dll_plugin,"SidTune_LoadFromCallBack")    
-    SidTune_LoadFromMemory = GetFunction(dll_plugin,"SidTune_LoadFromMemory")      
-    
-    
-    
-    SidTune_LoadFromMemory = GetFunction(dll_plugin,"SidTune_LoadFromMemory")
-    
+    SidTune_LoadFromMemory = GetFunction(dll_plugin,"SidTune_LoadFromMemory")    
+    SidTune_LoadObject = GetFunction(dll_plugin,"SidTune_LoadObject")
+    SidTune_LoadObjectCallBack = GetFunction(dll_plugin,"SidTune_LoadObjectCallBack")
+    SidTune_Read = GetFunction(dll_plugin,"SidTune_Read")
+    SidTune_SelectSong = GetFunction(dll_plugin,"SidTune_SelectSong")
+    SidTune_GetInfo = GetFunction(dll_plugin,"SidTune_GetInfo")
+    SidTune_GetInfoSubSong = GetFunction(dll_plugin,"SidTune_GetInfoSubSong")
+    SidTune_GetStatus = GetFunction(dll_plugin,"SidTune_GetStatus")
+    SidTune_StatusString = GetFunction(dll_plugin,"SidTune_StatusString")
+    SidTune_PlaceSidTuneInC64mem = GetFunction(dll_plugin,"SidTune_PlaceSidTuneInC64mem")
+    SidTune_CreateMD5 = GetFunction(dll_plugin,"SidTune_CreateMD5")
+    SidTune_CreateMD5New = GetFunction(dll_plugin,"SidTune_CreateMD5New")
+           
     SoundServer::p\library = dll_plugin
   Else 
     ProcedureReturn #False    
@@ -218,7 +240,7 @@ EndProcedure
 ;*	     None  RML_SID_Render(pMusic,*pBuffer,size.i)
 ;*
 ;*   FUNCTION
-;*       Calls SNDH.dll to render the tune to PCM for play back, this 
+;*       Calls SID.dll to render the tune to PCM for play back, this 
 ;*       Procedure is called by SoundServer, it's done this way for many
 ;*       reasons, mainly because each ??_Plugin.pbi / sound format or dll has
 ;*       it's own way of of rendering, so it's in the plugin just in case
@@ -233,7 +255,7 @@ EndProcedure
 Procedure RML_SID_Render(pMusic,*pBuffer,size.i)
   If (pMusic)
     SidPlayFP_Play(*pBuffer,size)
-    ;ShowMemoryViewer(*pBuffer,size)
+    ShowMemoryViewer(*pBuffer,size)
   EndIf 
 EndProcedure
 
@@ -309,7 +331,8 @@ EndProcedure
 CompilerIf #SID_DEBUG_PLUGIN = #True
   RML_SID_Initialize_SoundServer()
   Debug RML_SID_OpenLibrary()   
-  Debug RML_SID_LoadMusic("Music/Wiklund_-_Six_hours.sid")
+  Debug RML_SID_LoadMusic("Music/Wiklund_-_Six_hours.sid")  
+  SidTune_SelectSong(1)
   
   SoundServer::Play()
   
@@ -318,9 +341,11 @@ CompilerIf #SID_DEBUG_PLUGIN = #True
   RML_SID_Close()
 CompilerEndIf
 
+End
+
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 311
-; FirstLine = 277
+; CursorPosition = 344
+; FirstLine = 302
 ; Folding = --
 ; EnableXP
 ; DPIAware

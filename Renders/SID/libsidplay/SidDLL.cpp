@@ -423,6 +423,7 @@ extern "C" __declspec(dllexport) void SidTune_LoadFromMemory(const uint_least8_t
  * @param fileNameExt
  */
 extern "C" __declspec(dllexport) void SidTune_SetFileNameExtensions(const char** fileNameExt) {
+	c_tune->setFileNameExtensions(fileNameExt);
 }
 
 /**
@@ -432,6 +433,7 @@ extern "C" __declspec(dllexport) void SidTune_SetFileNameExtensions(const char**
  * @param separatorIsSlash
  */
 extern "C" __declspec(dllexport) void SidTune_LoadObject(const char* fileName, bool separatorIsSlash = false) {
+	c_tune->load(fileName,separatorIsSlash);
 }
 
 /**
@@ -443,6 +445,7 @@ extern "C" __declspec(dllexport) void SidTune_LoadObject(const char* fileName, b
  * @param separatorIsSlash
  */
 extern "C" __declspec(dllexport) void SidTune_LoadObjectCallBack(SidTune::LoaderFunc loader, const char* fileName, bool separatorIsSlash = false) {
+	c_tune->load(loader,fileName,separatorIsSlash);
 }
 
 /**
@@ -452,6 +455,7 @@ extern "C" __declspec(dllexport) void SidTune_LoadObjectCallBack(SidTune::Loader
  * @param bufferLen length of the buffer
  */
 extern "C" __declspec(dllexport) void SidTune_Read(const uint_least8_t * sourceBuffer, uint_least32_t bufferLen) {
+	c_tune->read(sourceBuffer, bufferLen);
 }
 
 /**
@@ -461,6 +465,7 @@ extern "C" __declspec(dllexport) void SidTune_Read(const uint_least8_t * sourceB
  * @return active song number, 0 if no tune is loaded.
  */
 extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
+	c_tune->selectSong(songNum);
 }
 
 /**
@@ -468,9 +473,9 @@ extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
  *
  * @return a pointer to #SidTuneInfo, 0 if no tune is loaded. The pointer must not be deleted.
  */
-//extern "C" __declspec(dllexport) SidTuneInfo * SidTune_GetInfo() {
-//	return;
-//}
+extern "C" __declspec(dllexport) const SidTuneInfo * SidTune_GetInfo() {
+	return c_tune->getInfo();
+}
 
 /**
  * Select sub-song and retrieve information.
@@ -478,9 +483,10 @@ extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
  * @param songNum the selected song (0 = default starting song)
  * @return a pointer to #SidTuneInfo, 0 if no tune is loaded. The pointer must not be deleted.
  */
-//extern "C" __declspec(dllexport) SidTuneInfo * SidTune_GetInfo(unsigned int songNum) {
-//}
+extern "C" __declspec(dllexport) const SidTuneInfo * SidTune_GetInfoSubSong(unsigned int songNum) {
+	return c_tune->getInfo(songNum);
 
+}
 
 /**
  * Determine current state of object.
@@ -489,20 +495,23 @@ extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
  *
  * @return current state (true = okay, false = error)
  */
- //extern "C" __declspec(dllexport) bool SidTune_GetStatus(unsigned int songNum) {
- //}
+ extern "C" __declspec(dllexport) bool SidTune_GetStatus(void) {
+	 return c_tune->getStatus();
+ }
 
 /**
  * Error/status message of last operation.
  */
- //extern "C" __declspec(dllexport) char * SidTune_StatusString() {
- //}
+ extern "C" __declspec(dllexport) const char * SidTune_StatusString() {
+	 return c_tune->statusString();
+ }
 
 /**
  * Copy sidtune into C64 memory (64 KB).
  */
- //extern "C" __declspec(dllexport) bool SidTune_PlaceSidTuneInC64mem(libsidplayfp::sidmemory& mem) {
- //}
+extern "C" __declspec(dllexport) bool SidTune_PlaceSidTuneInC64mem(libsidplayfp::sidmemory& mem) {
+	return c_tune->placeSidTuneInC64mem(mem);
+}
 
 /**
  * Calculates the MD5 hash of the tune, old method.
@@ -511,8 +520,9 @@ extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
  *
  * @return a pointer to the buffer containing the md5 string, 0 if no tune is loaded.
  */
- //extern "C" __declspec(dllexport) const char * SidTune_CreateMD5(char* md5 = 0) {
- //}
+ extern "C" __declspec(dllexport) const char * SidTune_CreateMD5(char* md5 = 0) {
+	 return c_tune->createMD5(md5);
+ }
 
 /**
  * Calculates the MD5 hash of the tune, new method, introduced in HVSC#68.
@@ -521,8 +531,9 @@ extern "C" __declspec(dllexport) void SidTune_SelectSong(unsigned int songNum) {
  *
  * @return a pointer to the buffer containing the md5 string, 0 if no tune is loaded.
  */
- //extern "C" __declspec(dllexport) const char * SidTune_CreateMD5New(char* md5 = 0) {
- //}
+ extern "C" __declspec(dllexport) const char * SidTune_CreateMD5New(char* md5 = 0) {
+	 return c_tune->createMD5New(md5);
+ }
 
 /******************************************************************************
  *  SidTuneInfo.h
