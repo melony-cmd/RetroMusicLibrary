@@ -251,8 +251,8 @@ CompilerIf #SNDH_DEBUG_PLUGIN = #True
   RML_SNDH_Close()
 CompilerEndIf
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 42
-; FirstLine = 26
+; CursorPosition = 88
+; FirstLine = 75
 ; Folding = --
 ; EnableXP
 ; DPIAware

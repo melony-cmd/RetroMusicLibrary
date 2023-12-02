@@ -92,6 +92,7 @@ PrototypeC SidPlayFP_SetBasic(*rom) : Global SidPlayFP_SetBasic.SidPlayFP_SetBas
 PrototypeC SidPlayFP_SetChargen(*rom) : Global SidPlayFP_SetChargen.SidPlayFP_SetChargen
 PrototypeC.i SidPlayFP_GetCia1TimerA() : Global SidPlayFP_GetCia1TimerA.SidPlayFP_GetCia1TimerA
 PrototypeC.b SidPlayFP_GetSidStatus(sidNum.l,*regs) : Global SidPlayFP_GetSidStatus.SidPlayFP_GetSidStatus
+
 PrototypeC SidTune_LoadFromFile(fileName.s,fileNameExt.l= 0,separatorIsSlash = #False) : Global SidTune_LoadFromFile.SidTune_LoadFromFile
 PrototypeC SidTune_LoadFromCallBack(loader.l,fileName.s,fileNameExt.l=0,separatorIsSlash = #False) : Global SidTune_LoadFromCallBack.SidTune_LoadFromCallBack
 PrototypeC SidTune_LoadFromMemory(*oneFileFormatSidtune,sidtuneLength.l) : Global SidTune_LoadFromMemory.SidTune_LoadFromMemory
@@ -106,6 +107,7 @@ PrototypeC.s SidTune_StatusString() : Global SidTune_StatusString.SidTune_Status
 PrototypeC.b SidTune_PlaceSidTuneInC64mem(*mem) : Global SidTune_PlaceSidTuneInC64mem.SidTune_PlaceSidTuneInC64mem
 PrototypeC.s SidTune_CreateMD5(*md5) : Global SidTune_CreateMD5.SidTune_CreateMD5
 PrototypeC.s SidTune_CreateMD5New(*md5) : Global SidTune_CreateMD5New.SidTune_CreateMD5New
+
 PrototypeC.i SidTuneInfo_LoadAddr() : Global SidTuneInfo_LoadAddr.SidTuneInfo_LoadAddr
 PrototypeC.i SidTuneInfo_InitAddr() : Global SidTuneInfo_InitAddr.SidTuneInfo_InitAddr
 PrototypeC.i SidTuneInfo_PlayAddr() : Global SidTuneInfo_PlayAddr.SidTuneInfo_PlayAddr
@@ -387,12 +389,17 @@ CompilerIf #SID_DEBUG_PLUGIN = #True
   RML_SID_Initialize_SoundServer()
   Debug RML_SID_OpenLibrary()   
   Debug RML_SID_LoadMusic("Music/Wiklund_-_Six_hours.sid")  
-;  SidTune_SelectSong(1)
-  
+;  SidTune_SelectSong(1)  
 ;  Debug SidTuneInfo_StartSong()  
+      
+  Debug PeekS(SidInfo_Credits(0),-1,#PB_Ascii)
+  Debug PeekS(SidInfo_Credits(1),-1,#PB_Ascii)
   
-  SoundServer::Play()
   
+  
+  
+  ;ShowMemoryViewer(SidInfo_Version(),16)  
+  ;SoundServer::Play()  
   Delay(5000)
   
   RML_SID_Close()
@@ -401,8 +408,8 @@ CompilerEndIf
 End
 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 146
-; FirstLine = 104
+; CursorPosition = 396
+; FirstLine = 364
 ; Folding = --
 ; EnableXP
 ; DPIAware

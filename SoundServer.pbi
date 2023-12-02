@@ -9,6 +9,7 @@
 Enumeration RML_TYPE
   #RML_YM2149SSND
   #RML_SNDH
+  #RML_SIDPLAY3
 EndEnumeration
 
 ;*****************************************************************************
@@ -41,6 +42,13 @@ DeclareModule SoundServer
   EndStructure  
   p.STRUCT_PLUGIN
   
+  Structure STRUCT_PROCESS_AUDIO
+    libraryname.s
+    libraryaddr.l
+  EndStructure  
+  Global NewList pa.STRUCT_PROCESS_AUDIO()
+  
+  ;-Declare Plugin
   Declare Render_CallBack(pmusic,*pBuffer,size.i)
   Declare Open(pUserCallback,totalBufferedSoundLen.l=4000)
   Declare Close()
@@ -48,6 +56,10 @@ DeclareModule SoundServer
   Declare Resume()
   Declare Play()
   Declare Pause()
+  
+  ;-Declare Process Audio
+  Declare Add_Audio_Processor(libraryname.s,libraryaddr.l)
+  Declare Remove_Audio_Processor(library.s)
   
 EndDeclareModule 
 
@@ -268,10 +280,36 @@ Module SoundServer
     FillNextBuffer()
   EndProcedure
   
+  ;*****************************************************************************
+  ;-Process Audio
+  ;*****************************************************************************
+  
+  ;
+  ;
+  ;
+  Procedure Add_Audio_Processor(libraryname.s,libraryaddr.l)
+    AddElement(pa())
+    pa()\libraryname = libraryname
+    pa()\libraryaddr = libraryaddr
+  EndProcedure
+  
+  ;
+  ;
+  ;
+  Procedure Remove_Audio_Processor(libraryname.s)
+    ForEach pa()
+      If pa()\libraryname=libraryname
+        CloseLibrary(pa()\libraryaddr)
+        DeleteElement(pa())
+      EndIf      
+    Next    
+  EndProcedure
+  
 EndModule 
 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 35
+; CursorPosition = 306
+; FirstLine = 265
 ; Folding = ---
 ; EnableXP
 ; DPIAware

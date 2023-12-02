@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\zingzong">
+      <UniqueIdentifier>{7bde8b15-9af2-49d4-aaae-b53acec4689c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zingzong\src\zingzong.h">
+      <Filter>Source Files\zingzong</Filter>
+    </ClInclude>
+    <ClInclude Include="zingzong\src\zz_def.h">
+      <Filter>Source Files\zingzong</Filter>
+    </ClInclude>
+    <ClInclude Include="zingzong\src\zz_private.h">
+      <Filter>Source Files\zingzong</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_common.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_help.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_lerp.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_none.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_qerp.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_soxr.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_srate.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\mix_test.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\out_ao.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\out_raw.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\vfs_file.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\vfs_ice.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zingzong.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_bin.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_core.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_fast.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_init.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_load.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_log.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_mem.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_mixers.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_play.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_str.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+    <ClCompile Include="zingzong\src\zz_vfs.c">
+      <Filter>Source Files\zingzong</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
