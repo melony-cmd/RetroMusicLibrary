@@ -43,8 +43,14 @@ DeclareModule SoundServer
   p.STRUCT_PLUGIN
   
   Structure STRUCT_PROCESS_AUDIO
-    libraryname.s
-    libraryaddr.l
+    libname.s                     ; name of library
+    libaddr.l                     ; address of library
+    libfunc.l                     ; single procedure address
+    ;
+    enabled.b                     ; is enabled = true /disabled = false
+    priority.l                    ; [w.i.p] -127 to 127 order in which the processors are called.
+    *liboutbuffer                 ; output processed memory buffer
+    liboutbuffersize.l            ; size of processed memory buffer
   EndStructure  
   Global NewList pa.STRUCT_PROCESS_AUDIO()
   
@@ -58,7 +64,7 @@ DeclareModule SoundServer
   Declare Pause()
   
   ;-Declare Process Audio
-  Declare Add_Audio_Processor(libraryname.s,libraryaddr.l)
+  Declare Add_Audio_Processor(libname.s,libaddr.l,libfunc.l,liboutbuffersize.l = 0,enabled=#True)
   Declare Remove_Audio_Processor(library.s)
   
 EndDeclareModule 
@@ -238,7 +244,31 @@ Module SoundServer
       CompilerEndIf
       If s_audioserver\stop = #False
         CallFunctionFast(SoundServer::p\Render,pMusic,*pBuffer,nbSample)
-      EndIf      
+        ;
+        ; Generial Concept:
+        ; Each 'processing' library has a single function that takes a *pBuffer and the size of the
+        ; memory buffer, this buffer is the decoded pcm audio genorated by a ??_Plugin.
+        ;
+        ; The problem: therefore *pBuffer is no longer the valid audio buffer, it's also a cyclic 
+        ; problem, meaning there maybe quite a few audio processors all working on the same data.
+        ;
+        ; ** Because we don't have anything currently that actually outputs data that isn't a pile
+        ; of corruption we shall pause development here, though the general idea would be to 
+        ; free/backup & reuse *pBuffer'n'size or just overwrite *pbuffer with the address to the
+        ; newest version of the buffer, which might be processed by the next audio processor and
+        ; so on.
+        ; 
+        ; There is a priority structure item that has an intended use case to process the audio
+        ; after render in a certain order.
+        ;
+        ; maybe this is where we might in future add VSTs 32/64? but not today.
+        ;
+        ForEach pa()
+          If (pa()\libfunc<>0) And (pa()\enabled=#True)
+            CallFunctionFast(pa()\libfunc,*pBuffer,size.i)
+          EndIf          
+        Next        
+      EndIf
     EndIf        
   EndProcedure 
   
@@ -287,10 +317,16 @@ Module SoundServer
   ;
   ;
   ;
-  Procedure Add_Audio_Processor(libraryname.s,libraryaddr.l)
+  Procedure Add_Audio_Processor(libname.s,libaddr.l,libfunc.l,liboutbuffersize.l = 0, enabled=#True)
     AddElement(pa())
-    pa()\libraryname = libraryname
-    pa()\libraryaddr = libraryaddr
+    pa()\libname = libname
+    pa()\libaddr = libaddr
+    pa()\libfunc = libfunc
+    pa()\enabled = enabled
+    If liboutbuffersize<>0 And enabled=#True
+      pa()\liboutbuffer = AllocateMemory(liboutbuffersize)
+      pa()\liboutbuffersize = liboutbuffersize
+    EndIf    
   EndProcedure
   
   ;
@@ -298,8 +334,11 @@ Module SoundServer
   ;
   Procedure Remove_Audio_Processor(libraryname.s)
     ForEach pa()
-      If pa()\libraryname=libraryname
-        CloseLibrary(pa()\libraryaddr)
+      If pa()\libname=libraryname
+        If pa()\liboutbuffer
+          FreeMemory(pa()\liboutbuffer)
+        EndIf        
+        CloseLibrary(pa()\libaddr)
         DeleteElement(pa())
       EndIf      
     Next    
@@ -308,8 +347,8 @@ Module SoundServer
 EndModule 
 
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 306
-; FirstLine = 265
+; CursorPosition = 263
+; FirstLine = 235
 ; Folding = ---
 ; EnableXP
 ; DPIAware

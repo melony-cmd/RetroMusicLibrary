@@ -4,6 +4,11 @@
 IncludeFile "SNDH_Plugin.pbi"
 IncludeFile "YM_Plugin.pbi"
 
+;
+IncludeFile "Soxr_Processing_Plugin.pbi"
+
+RML_SOXR_OpenLibrary()
+
 ;*****************************************************************************
 ; YM TEST
 ;*****************************************************************************
@@ -62,7 +67,9 @@ SoundServer::Stop()
   
 RML_SNDH_Close()
 
+RML_SOXR_Close()
+
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 8
+; CursorPosition = 9
 ; EnableXP
 ; DPIAware

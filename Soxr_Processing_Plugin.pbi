@@ -137,6 +137,12 @@ Structure struct_soxr_runtime_spec                                            ; 
 EndStructure
 
 ;*****************************************************************************
+; Declarations SOXR
+;*****************************************************************************
+
+Declare RML_SOXR_Render(*buffer,size.l)
+
+;*****************************************************************************
 ; Prototypes SOXR
 ;*****************************************************************************
 
@@ -264,7 +270,7 @@ PrototypeC SOXR_IO_Spec(itype.i,otype.i) : Global SOXR_IO_Spec.SOXR_IO_Spec
 PrototypeC SOXR_Set_Error(soxr_t,soxr_error.i) : Global SOXR_Set_Error.SOXR_Set_Error 
 PrototypeC SOXR_Set_Num_Channels(soxr_t,num_channels.i) : Global SOXR_Set_Num_Channels.SOXR_Set_Num_Channels 
 
-XIncludeFile "SoundServer.pbi"
+;XIncludeFile "SoundServer.pbi"
 
 ;*****************************************************************************
 ; Initalize SOXR
@@ -311,7 +317,9 @@ Procedure RML_SOXR_OpenLibrary(library.s=#SOXR_PLUGIN)
     SOXR_Set_IO_Ratio = GetFunction(dll_plugin, "soxr_set_io_ratio")
     SOXR_Set_Num_Channels = GetFunction(dll_plugin, "soxr_set_num_channels")
     SOXR_Version = GetFunction(dll_plugin, "soxr_version")
-    SoundServer::Add_Audio_Processor(#SOXR_PLUGIN,dll_plugin)
+    CompilerIf #PB_Compiler_IsMainFile<>1
+      SoundServer::Add_Audio_Processor(#SOXR_PLUGIN,dll_plugin,@RML_SOXR_Render(),1045504,#False)      
+    CompilerEndIf      
   Else 
     ProcedureReturn #False    
   EndIf
@@ -331,12 +339,44 @@ EndProcedure
 ;* 
 ;*****************************************************************************
 Procedure RML_SOXR_Close()
-  SoundServer::Remove_Audio_Processor(#SOXR_PLUGIN)
+  CompilerIf #PB_Compiler_IsMainFile<>1
+    SoundServer::Remove_Audio_Processor(#SOXR_PLUGIN)
+  CompilerEndIf
 EndProcedure
 
 ;*****************************************************************************
 ; Sound Server Procedures
 ;*****************************************************************************
+Procedure RML_SOXR_Render(*buffer,size.l)
+  CompilerIf #PB_Compiler_IsMainFile<>1
+    result = SOXR_OneShot(size,44100,1,*buffer,size,@idone,SoundServer::pa()\liboutbuffer,4096*3,@odone,0,0,0)
+    ShowMemoryViewer(SoundServer::pa()\liboutbuffer,size)
+    
+    Debug "result = "+Str(result)
+    Debug "\liboutbuffer = "+Str(SoundServer::pa()\liboutbuffer)
+    Debug "\liboutbuffersize = "+Str(SoundServer::pa()\liboutbuffersize)
+    Debug "odone = "+Str(@odone)
+    
+    ; HA! all we get is static that's what you get for not knowing wtf something is supposed to be.
+    ; well at least it's here right?! -- -- disabling this plugin.
+    If IsFile(0)=0
+      OpenFile(0,"soxr_raw.pcm")
+    EndIf  
+    If IsFile(0)<>0
+      FileSeek(0,Lof(0))
+      WriteData(0,SoundServer::pa()\liboutbuffer,size)
+      CloseFile(0)
+    EndIf
+    
+    
+    
+  CompilerEndIf
+  ProcedureReturn
+EndProcedure
+
+Procedure RML_SOXR_Initialize_SoundServer()
+  
+EndProcedure
 
 ;*****************************************************************************
 ; Helpper Procedures
@@ -345,14 +385,40 @@ EndProcedure
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
+CompilerIf #SOXR_DEBUG_PLUGIN = #True
+  If RML_SOXR_OpenLibrary()
+  ;Debug PeekS(SOXR_Version(),-1,#PB_Ascii)
+  ;ShowMemoryViewer(SOXR_Version(),16)
+  
+    *in = AllocateMemory(4097*8)
+    *out = AllocateMemory(4097*8)
+    
+    fl.f=-1.0
+    For i=0 To 255 Step 4
+      PokeF(*in+i,fl)
+      fl+0.1
+    Next
+    
+    Debug SOXR_OneShot(11055,44100,1,*in,4096,@idone,*out,4096,@odone, 0,0,0)
+    
+    Debug odone
+    Debug idone
+    
+    ShowMemoryViewer(*in,1024)
+    Delay(2000)
+    ShowMemoryViewer(*out,1024)
+    
+    ;OpenConsole()
+    ;For i=0 To 255 Step 4
+    ;  PrintN(PeekF())
+    
+    RML_SOXR_Close()
+  EndIf  
+CompilerEndIf
 
-RML_SOXR_OpenLibrary()
-Debug PeekS(SOXR_Version(),-1,#PB_Ascii)
-
-ShowMemoryViewer(SOXR_Version(),16)
-RML_SOXR_Close()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 33
-; Folding = -
+; CursorPosition = 321
+; FirstLine = 294
+; Folding = --
 ; EnableXP
 ; DPIAware
