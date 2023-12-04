@@ -1,3 +1,21 @@
 ﻿  ReplayQuartet.cpp
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(450,20): warning C4244: '=': conversion from 'u16_t' to 'uint16_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(452,11): warning C4244: '=': conversion from 'u16_t' to 'uint8_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(452,23): warning C4244: '=': conversion from 'u16_t' to 'uint8_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(464,25): warning C4244: '=': conversion from 'u32_t' to 'uint8_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(464,39): warning C4244: '=': conversion from 'u32_t' to 'uint8_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
+D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\zingzong\src\zz_private.h(464,51): warning C4244: '=': conversion from 'u32_t' to 'uint8_t', possible loss of data
+  (compiling source file 'ReplayQuartet.cpp')
+  
      Creating library D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\Debug\Quartet.lib and object D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\Debug\Quartet.exp
   Quartet.vcxproj -> D:\Work\Code\PureBasic\RetroMusicLibrary\Renders\Quartet\Debug\Quartet.dll

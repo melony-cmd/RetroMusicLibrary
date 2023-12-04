@@ -1,5 +1,7 @@
 #include "ReplayQuartet.h"
 #include "zingzong/src/zingzong.h"
+#include "zingzong/src/zz_def.h"
+#include "zingzong/src/zz_private.h"
 
 extern "C" __declspec(dllexport) const char* quartet_core_version(void);
 extern "C" __declspec(dllexport) uint8_t quartet_core_mute(zz_core_t K, uint8_t clr, uint8_t set);
@@ -22,6 +24,12 @@ extern "C" __declspec(dllexport) zz_err_t quartet_tick(zz_play_t play);
 extern "C" __declspec(dllexport) zz_i16_t quartet_play(zz_play_t play, void* pcm, zz_i16_t n);
 extern "C" __declspec(dllexport) zz_u32_t quartet_position(zz_play_t play);
 extern "C" __declspec(dllexport) zz_u8_t quartet_mixer_info(zz_u8_t id, const char** pname, const char** pdesc);
+
+/*
+*/
+extern "C" __declspec(dllexport) int q_song_load(song_t * song, const char* uri) {
+	return song_load(song,uri);
+}
 
 const char* quartet_core_version(void) {
 	return zz_core_version();
@@ -106,33 +114,3 @@ zz_u32_t quartet_position(zz_play_t play){
 zz_u8_t quartet_mixer_info(zz_u8_t id, const char** pname, const char** pdesc){
 	return zz_mixer_info(id,pname,pdesc);
 }
-
-
-/*
-* 
-*  Functions to implyment
-* 
-* 
-uint8_t zz_core_mute(zz_core_t K, uint8_t clr, uint8_t set);
-zz_err_t zz_core_init(zz_core_t core, zz_mixer_t mixer, zz_u32_t spr);
-void zz_core_kill(zz_core_t core);
-zz_err_t zz_core_tick(zz_core_t const core);
-zz_i16_t zz_core_play(zz_core_t core, void * pcm, zz_i16_t n);
-zz_u32_t zz_core_blend(zz_core_t core, zz_u8_t map, zz_u16_t lr8);
-zz_u8_t zz_log_bit(const zz_u8_t clr, const zz_u8_t set);
-void zz_log_fun(zz_log_t func, void * user);
-void zz_mem(zz_new_t newf, zz_del_t delf);
-zz_err_t zz_new(zz_play_t * pplay);
-void zz_del(zz_play_t * pplay);
-zz_err_t zz_load(zz_play_t const play,const char * song, const char * vset,zz_u8_t * pfmt);
-zz_err_t zz_close(zz_play_t const play);
-zz_err_t zz_info(zz_play_t play, zz_info_t * pinfo);
-zz_err_t zz_init(zz_play_t play, zz_u16_t rate, zz_u32_t ms);
-zz_err_t zz_setup(zz_play_t play, zz_u8_t mixer, zz_u32_t spr);
-zz_err_t zz_tick(zz_play_t play);
-zz_i16_t zz_play(zz_play_t play, void * pcm, zz_i16_t n);
-zz_u32_t zz_position(zz_play_t play);
-zz_u8_t zz_mixer_info(zz_u8_t id, const char **pname, const char **pdesc);
-
-
-*/

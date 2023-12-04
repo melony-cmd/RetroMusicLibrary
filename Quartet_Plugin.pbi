@@ -165,33 +165,33 @@ EndStructure   ;/**< meta tags.                 */
 ;*****************************************************************************
 ; Prototypes Quartet
 ;*****************************************************************************
-PrototypeC Quartet_Core_Version() : Global  Quartet_Core_Version.Quartet_Core_Version
-PrototypeC Quartet_Core_Mute(K.i,clr.a,set.a) : Global Quartet_Core_Mute.Quartet_Core_Mute
+PrototypeC Quartet_Core_Version()                     : Global  Quartet_Core_Version.Quartet_Core_Version
+PrototypeC Quartet_Core_Mute(K.i,clr.a,set.a)         : Global Quartet_Core_Mute.Quartet_Core_Mute
 
-PrototypeC Quartet_Core_Init(core.i,mixer.l, spr.l) : Global Quartet_Core_Init.Quartet_Core_Init
+PrototypeC Quartet_Core_Init(core.i,mixer.l, spr.l)   : Global Quartet_Core_Init.Quartet_Core_Init
 
-PrototypeC Quartet_Core_Kill(core.i) : Global Quartet_Core_Kill.Quartet_Core_Kill
-PrototypeC Quartet_Core_Tick(core.i) : Global Quartet_Core_Tick.Quartet_Core_Tick
-PrototypeC Quartet_Core_Play(core.i,*pcm, n.l) : Global Quartet_Core_Play.Quartet_Core_Play
-PrototypeC Quartet_Core_Blend(core.i,bmap.l, lr8.l) : Global Quartet_Core_Blend.Quartet_Core_Blend
+PrototypeC Quartet_Core_Kill(core.i)                  : Global Quartet_Core_Kill.Quartet_Core_Kill
+PrototypeC Quartet_Core_Tick(core.i)                  : Global Quartet_Core_Tick.Quartet_Core_Tick
+PrototypeC Quartet_Core_Play(core.i,*pcm, n.l)        : Global Quartet_Core_Play.Quartet_Core_Play
+PrototypeC Quartet_Core_Blend(core.i,bmap.l, lr8.l)   : Global Quartet_Core_Blend.Quartet_Core_Blend
 
-PrototypeC Quartet_Log_Bit(clr,set): Global Quartet_Log_Bit.Quartet_Log_Bit
-PrototypeC Quartet_Log_Fun(func,*user): Global Quartet_Log_Fun.Quartet_Log_Fun
-PrototypeC Quartet_Mem(newf,delf): Global Quartet_Mem.Quartet_Mem
-PrototypeC Quartet_New(*pplay): Global Quartet_New.Quartet_New
-PrototypeC Quartet_Del(*pplay): Global Quartet_Del.Quartet_Del 
+PrototypeC Quartet_Log_Bit(clr,set)                   : Global Quartet_Log_Bit.Quartet_Log_Bit
+PrototypeC Quartet_Log_Fun(func,*user)                : Global Quartet_Log_Fun.Quartet_Log_Fun
+PrototypeC Quartet_Mem(newf,delf)                     : Global Quartet_Mem.Quartet_Mem
+PrototypeC Quartet_New(*pplay)                        : Global Quartet_New.Quartet_New
+PrototypeC Quartet_Del(*pplay)                        : Global Quartet_Del.Quartet_Del 
 
-PrototypeC Quartet_Load(play, song.s, *vset, *pfmt): Global Quartet_Load.Quartet_Load
-PrototypeC Quartet_Close(play): Global Quartet_Close.Quartet_Close 
-PrototypeC Quartet_Info(play, *pinfo): Global Quartet_Info.Quartet_Info
+PrototypeC.b Quartet_Load(play, song.p-Ascii, *vset, *pfmt)   : Global Quartet_Load.Quartet_Load
+PrototypeC Quartet_Close(play)                        : Global Quartet_Close.Quartet_Close 
+PrototypeC Quartet_Info(play, *pinfo)                 : Global Quartet_Info.Quartet_Info
 
-PrototypeC Quartet_Init(play,rate,ms): Global Quartet_Init.Quartet_Init
+PrototypeC Quartet_Init(play,rate,ms)                 : Global Quartet_Init.Quartet_Init
 
-PrototypeC Quartet_Setup(play,mixer,spr): Global Quartet_Setup.Quartet_Setup
-PrototypeC Quartet_Tick(play): Global Quartet_Tick.Quartet_Tick
-PrototypeC Quartet_Play(play,*pcm,n): Global Quartet_Play.Quartet_Play 
-PrototypeC Quartet_Position(play): Global Quartet_Position.Quartet_Position
-PrototypeC Quartet_Mixer_Info(id,*pname,*pdesc): Global Quartet_Mixer_Info.Quartet_Mixer_Info
+PrototypeC Quartet_Setup(play,mixer,spr)              : Global Quartet_Setup.Quartet_Setup
+PrototypeC Quartet_Tick(play)                         : Global Quartet_Tick.Quartet_Tick
+PrototypeC Quartet_Play(play,*pcm,n)                  : Global Quartet_Play.Quartet_Play 
+PrototypeC Quartet_Position(play)                     : Global Quartet_Position.Quartet_Position
+PrototypeC Quartet_Mixer_Info(id,*pname,*pdesc)       : Global Quartet_Mixer_Info.Quartet_Mixer_Info
 
 XIncludeFile "SoundServer.pbi"
 ;*****************************************************************************
@@ -272,27 +272,34 @@ EndProcedure
 ;*****************************************************************************
 ; Helpper Procedures
 ;*****************************************************************************
+Procedure Quartet_Error(err.b)
+  Select err
+    Case #ZZ_OK		     : Debug(";/**< (0) No error.                       */")
+    Case #ZZ_ERR	     : Debug(";/**< (1) Unspecified error.              */")
+    Case #ZZ_EARG 	   : Debug(";/**< (2) Argument error.                 */")
+    Case #ZZ_ESYS		   : Debug(";/**< (3) System error (I/O, memory ...). */")
+    Case #ZZ_EINP		   : Debug(";/**< (4) Problem With input.             */")
+    Case #ZZ_EOUT		   : Debug(";/**< (5) Problem With output.            */")
+    Case #ZZ_ESNG		   : Debug(";/**< (6) Song error.                     */")
+    Case #ZZ_ESET		   : Debug(";/**< (7) Voice set error                 */")
+    Case #ZZ_EPLA		   : Debug(";/**< (8) Player error.                   */")
+    Case #ZZ_EMIX		   : Debug(";/**< (9) Mixer error.                    */")
+    Default
+      Debug("???")
+  EndSelect  
+EndProcedure
+
+Procedure.l RML_Quartet_LoadMusic(file.s)
+EndProcedure
 
 ;*****************************************************************************
 ;                 !!ONLY!! -- Testing Purposes -- !!ONLY!!
 ;*****************************************************************************
-RML_Quartet_OpenLibrary()
-Debug PeekS(Quartet_Core_Version(),-1,#PB_Ascii)
+;Source Data -- "Music/H_RACE_5.4Q"
 
-*memptr = AllocateMemory(44100)
-
-Quartet_Init(m_player,0,0)
-Quartet_Setup(m_player,#ZZ_MIXER_DEF,48000)
-
-Debug Quartet_Load(m_player,"Music/H_RACE_5.4Q",0,0)
-
-;Debug Quartet_Play(m_player,*memptr,128)
-
-
-RML_Quartet_Close()
 ; IDE Options = PureBasic 6.03 LTS (Windows - x86)
-; CursorPosition = 288
-; FirstLine = 249
+; CursorPosition = 297
+; FirstLine = 256
 ; Folding = -
 ; EnableXP
 ; DPIAware
